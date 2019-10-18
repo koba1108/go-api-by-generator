@@ -22,7 +22,8 @@ services:
       - 8080:8080
     environment:
       DB_DRIVER: mysql
-      DB_DATABASE: public
+      DB_HOST: db
+      DB_NAME: public
       DB_USER: root
       DB_PASSWORD: pass1234
     command: go run main.go
