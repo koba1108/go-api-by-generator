@@ -1,4 +1,4 @@
-module github.com/go-api-by-generater
+module github.com/go-api-by-generator
 
 go 1.12
 

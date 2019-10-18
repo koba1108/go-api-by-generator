@@ -1,8 +1,8 @@
 FROM golang:latest
 
-WORKDIR /go/src/go-api-by-generater
+WORKDIR /go/src/github/go-api-by-generator
 ENV GO111MODULE=on
 
 EXPOSE 8080
 
-CMD ["go", "run", "/go/src/main.go"]
+# CMD ["go", "run", "main.go"]

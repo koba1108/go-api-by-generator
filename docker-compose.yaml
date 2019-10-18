@@ -8,6 +8,8 @@ services:
       - ./db/volumes:/var/lib/mysql
     ports:
       - 3306:3306
+    restart: always
+    tty: true
     environment:
       MYSQL_ROOT_PASSWORD: pass1234
       MYSQL_DATABASE: public
@@ -15,8 +17,16 @@ services:
     container_name: api
     build: .
     volumes:
-      - ./:/go/src
+      - ./:/go/src/github/go-api-by-generator
     ports:
       - 8080:8080
+    environment:
+      DB_DRIVER: mysql
+      DB_DATABASE: public
+      DB_USER: root
+      DB_PASSWORD: pass1234
+    command: go run main.go
+    restart: always
+    tty: true
     depends_on:
       - db
