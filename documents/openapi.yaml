@@ -1,0 +1,77 @@
+openapi: 3.0.0
+info:
+  title: HogeHoge
+  version: 1.0.0
+servers:
+  - url: http://localhost:9002
+    description: Localhost server
+  # todo: 各サーバURLの設置
+  - url: http://dev.api.example.com
+    description: Development server
+  - url: https://api.example.com
+    description: Production server
+paths:
+  /users:
+    get:
+      parameters:
+        - name: order_by
+          description: "並び順"
+          in: query
+          schema:
+            type: string
+        - name: limit
+          description: "取得件数"
+          in: query
+          schema:
+            type: integer
+        - name: page
+          description: "ページング用パラメータ"
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "ユーザの一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/UserResponse'
+  /users/{userId}:
+    post:
+      parameters: # リクエストパラメータ
+        - name: userId
+          in: path # パラメータをパス内に含める
+          description: user id
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: ok
+components:
+  schemas:
+    UserResponse:
+      description: "ユーザモデル"
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        age:
+          type: integer
+        weight:
+          type: integer
+        created_at:
+          type: string
+        updated_at:
+          type: string
+      example:
+        id: 1
+        name: koba
+        age: 33
+        weight: 80
+        created_at: "2014-10-10T13:50:40+09:00"
+        updated_at: "2014-10-10T13:50:40+09:00"
