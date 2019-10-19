@@ -1,7 +1,6 @@
 version: '3'
 
 services:
-  # モックサーバはこれでやる https://qiita.com/sakymark/items/21568947e5241a877a2c
   swagger-editor:
     container_name: swagger
     image: swaggerapi/swagger-editor
@@ -19,7 +18,7 @@ services:
     environment:
       SWAGGER_JSON: /openapi.yaml
   swagger-mock:
-    container_name: "swagger-mock"
+    container_name: swagger-mock
     image: danielgtaylor/apisprout:latest
     ports:
       - 9002:8000
