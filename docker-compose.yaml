@@ -2,7 +2,7 @@ version: '3'
 
 services:
   swagger-editor:
-    container_name: swagger
+    container_name: swagger-editor
     image: swaggerapi/swagger-editor
     ports:
       - 9000:8080
@@ -17,6 +17,8 @@ services:
       - ./documents/openapi.yaml:/openapi.yaml
     environment:
       SWAGGER_JSON: /openapi.yaml
+    restart: always
+    tty: true
   swagger-mock:
     container_name: swagger-mock
     image: danielgtaylor/apisprout:latest
@@ -25,6 +27,8 @@ services:
     volumes:
       - ./documents/openapi.yaml:/openapi.yaml
     entrypoint: /usr/local/bin/apisprout /openapi.yaml --watch
+    restart: always
+    tty: true
   db:
     container_name: db
     image: mysql:5.7

@@ -1,8 +1,13 @@
 # go-api-by-generator
 go-api created by xo, swagger
 
-## generate command
+## api generate command
+```shell script
+$ sh gen-gin-server.sh 
 ```
+
+## model generate command
+```shell script
 docker-compose exec api bash
 xo mysql://root:pass1234@db/public -o models
 ```
