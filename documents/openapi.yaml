@@ -14,11 +14,6 @@ paths:
   /users:
     get:
       parameters:
-        - name: order_by2
-          description: "並び順2"
-          in: query
-          schema:
-            type: string
         - name: order_by
           description: "並び順"
           in: query
