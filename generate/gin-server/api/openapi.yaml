@@ -13,6 +13,14 @@ paths:
   /users:
     get:
       parameters:
+      - description: 並び順2
+        explode: true
+        in: query
+        name: order_by2
+        required: false
+        schema:
+          type: string
+        style: form
       - description: 並び順
         explode: true
         in: query
