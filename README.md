@@ -6,6 +6,9 @@ go-api created by xo, swagger
 $ sh gen-gin-server.sh 
 ```
 
+更新時はgenerate配下のファイルは変更するのではなく、<br/>
+変更diffを手作業で取り込む必要がありそう。
+
 ## model generate command
 ```shell script
 docker-compose exec api bash

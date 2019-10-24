@@ -60,10 +60,12 @@ components:
           type: integer
         name:
           type: string
+          nullable: true
         age:
           type: integer
         weight:
           type: integer
+          nullable: true
         created_at:
           type: string
         updated_at:

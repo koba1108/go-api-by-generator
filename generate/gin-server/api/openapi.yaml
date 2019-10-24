@@ -75,10 +75,12 @@ components:
         id:
           type: integer
         name:
+          nullable: true
           type: string
         age:
           type: integer
         weight:
+          nullable: true
           type: integer
         created_at:
           type: string

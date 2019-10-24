@@ -14,11 +14,11 @@ type UserResponse struct {
 
 	Id int32 `json:"id,omitempty"`
 
-	Name string `json:"name,omitempty"`
+	Name *string `json:"name,omitempty"`
 
 	Age int32 `json:"age,omitempty"`
 
-	Weight int32 `json:"weight,omitempty"`
+	Weight *int32 `json:"weight,omitempty"`
 
 	CreatedAt string `json:"created_at,omitempty"`
 
