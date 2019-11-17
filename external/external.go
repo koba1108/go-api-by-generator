@@ -1,7 +1,8 @@
 package external
 
 func Init() {
-	initDB()
+	// initDB() :todo あとで直す
+	initFirebase()
 }
 
 func Finalize() {

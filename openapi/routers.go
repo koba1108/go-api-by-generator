@@ -1,19 +1,20 @@
 package openapi
 
 import (
-	"net/http"
-
 	"github.com/gin-gonic/gin"
+	"github.com/go-api-by-generator/external"
+	"log"
+	"net/http"
 )
 
 // Route is the information for every URI.
 type Route struct {
 	// Name is the name of this Route.
-	Name        string
+	Name string
 	// Method is the string for the HTTP method. ex) GET, POST etc..
-	Method      string
+	Method string
 	// Pattern is the pattern of the URI.
-	Pattern     string
+	Pattern string
 	// HandlerFunc is the handler function of this route.
 	HandlerFunc gin.HandlerFunc
 }
@@ -42,7 +43,24 @@ func NewRouter() *gin.Engine {
 
 // Index is the index handler.
 func Index(c *gin.Context) {
-	c.String(http.StatusOK, "Hello World!")
+	c.String(http.StatusOK, "OK")
+}
+
+func MessageMock(c *gin.Context) {
+	// Push通知テスト用
+	token := c.Param("targetToken")
+	log.Printf("token: %v", token)
+	result, err := external.SendMessage(token, map[string]string{
+		"title": "タイトルだよ",
+		"text":  "本文だよ",
+	})
+	if err != nil {
+		// エラー制御は細かく刷る場合は、 IsInvalidArgument などで検査可能
+		// https://godoc.org/firebase.google.com/go/messaging
+		c.String(http.StatusBadRequest, err.Error())
+	} else {
+		c.String(http.StatusOK, "OK", result)
+	}
 }
 
 var routes = Routes{
@@ -52,14 +70,18 @@ var routes = Routes{
 		"/",
 		Index,
 	},
-
+	{
+		"Index",
+		http.MethodPost,
+		"/message/:targetToken",
+		MessageMock,
+	},
 	{
 		"UsersGet",
 		http.MethodGet,
 		"/users",
 		UsersGet,
 	},
-
 	{
 		"UsersUserIdPost",
 		http.MethodPost,
