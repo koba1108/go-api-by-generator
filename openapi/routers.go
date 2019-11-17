@@ -49,11 +49,11 @@ func Index(c *gin.Context) {
 func MessageMock(c *gin.Context) {
 	// Push通知テスト用
 	token := c.Param("targetToken")
+	data := map[string]string{}
+	_ = c.Bind(&data)
 	log.Printf("token: %v", token)
-	result, err := external.SendMessage(token, map[string]string{
-		"title": "タイトルだよ",
-		"text":  "本文だよ",
-	})
+	log.Printf("data: %v", data)
+	result, err := external.SendMessage(token, data)
 	if err != nil {
 		// エラー制御は細かく刷る場合は、 IsInvalidArgument などで検査可能
 		// https://godoc.org/firebase.google.com/go/messaging
