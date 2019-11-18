@@ -25,7 +25,7 @@ func GetFirebaseApp() *firebase.App {
 	return app
 }
 
-func SendMessage(token string, data map[string]string) (string, error) {
+func SendFCM(token string, data map[string]string) (string, error) {
 	message := &messaging.Message{
 		Data: data,
 		Token: token,

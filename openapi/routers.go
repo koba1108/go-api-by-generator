@@ -53,7 +53,7 @@ func MessageMock(c *gin.Context) {
 	_ = c.Bind(&data)
 	log.Printf("token: %v", token)
 	log.Printf("data: %v", data)
-	result, err := external.SendMessage(token, data)
+	result, err := external.SendFCM(token, data)
 	if err != nil {
 		// エラー制御は細かく刷る場合は、 IsInvalidArgument などで検査可能
 		// https://godoc.org/firebase.google.com/go/messaging
