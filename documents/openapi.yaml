@@ -1,79 +1,1412 @@
-openapi: 3.0.0
+openapi: "3.0.0"
 info:
-  title: HogeHoge
-  version: 1.0.0
+  title: "HogeHoge"
+  version: "1.0.0"
 servers:
-  - url: http://localhost:9002
-    description: Localhost server
+  - url: "http://localhost:9002"
+    description: "Localhost server"
   # todo: 各サーバURLの設置
-  - url: http://dev.api.example.com
-    description: Development server
-  - url: https://api.example.com
-    description: Production server
+  - url: "http://dev.api.example.com"
+    description: "Development server"
+  - url: "https://api.example.com"
+    description: "Production server"
+tags:
+  - name: "users"
+    description: "ユーザー"
+  - name: "likes"
+    description: "いいね"
+  - name: "skips"
+    description: "スキップ"
+  - name: "blocks"
+    description: "ブロック"
 paths:
   /users:
     get:
-      parameters:
-        - name: order_by
+      tags:
+        - "users"
+      summary: "ユーザー一覧"
+      parameters: # リクエストパラメータ
+        - name: "order_by"
           description: "並び順"
-          in: query
+          in: "query"
           schema:
-            type: string
-        - name: limit
+            type: "string"
+        - name: "limit"
           description: "取得件数"
-          in: query
+          in: "query"
           schema:
-            type: integer
-        - name: page
+            type: "integer"
+        - name: "page"
           description: "ページング用パラメータ"
-          in: query
+          in: "query"
           schema:
-            type: integer
+            type: "object"
+            properties:
+              user:
+                $ref: '#/components/schemas/UserSearchConditions'
+              userId:
+                type: "integer"
       responses:
-        "200":
+        200:
           description: "ユーザの一覧を返します"
           content:
             application/json:
               schema:
-                type: array
+                type: "array"
                 items:
-                  $ref: '#/components/schemas/UserResponse'
+                  $ref: '#/components/schemas/UserGetResponse'
+    put:
+      tags:
+        - "users"
+      summary: "ユーザー登録"
+      operationId: "addUsers"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPutRequests"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
   /users/{userId}:
     post:
+      tags:
+        - "users"
+      summary: "ユーザー更新"
+      operationId: "editUsers"
       parameters: # リクエストパラメータ
-        - name: userId
-          in: path # パラメータをパス内に含める
-          description: user id
+        - name: "userId"
+          in: 'path' # パラメータをパス内に含める
+          description: "ユーザーID"
           required: true
           schema:
-            type: integer
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPostRequests"
       responses:
-        "200":
-          description: ok
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+    delete:
+      tags:
+        - "users"
+      summary: "ユーザー削除"
+      parameters: # リクエストパラメータ
+        - name: "userId"
+          in: "path" # パラメータをパス内に含める
+          description: "ユーザーID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /likes/:
+    get:
+      tags:
+        - "likes"
+      summary: "いいねした人一覧"
+      parameters: # リクエストパラメータ
+        - name: "user_id"
+          description: "ユーザーID"
+          in: "query"
+          schema:
+            type: "integer"
+        - name: "limit"
+          description: "取得件数"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "いいねした人の一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/LikeGetResponse'
+    put:
+      tags:
+        - "likes"
+      summary: "いいね登録"
+      operationId: "addLike"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LikePutAndPostRequests"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /likes/{id}/:
+    post:
+      tags:
+        - "likes"
+      summary: "いいね更新"
+      operationId: "editLike"
+      parameters: # リクエストパラメータ
+        - name: "id"
+          in: 'path' # パラメータをパス内に含める
+          description: "いいねID"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LikePutAndPostRequests"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+    delete:
+      tags:
+        - "likes"
+      summary: "いいね削除"
+      parameters: # リクエストパラメータ
+        - name: "id"
+          in: "path" # パラメータをパス内に含める
+          description: "いいねID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /target_likes/:
+    get:
+      tags:
+        - "likes"
+      summary: "いいねされた人一覧"
+      parameters: # リクエストパラメータ
+        - name: "user_id"
+          description: "ユーザーID"
+          in: "query"
+          schema:
+            type: "integer"
+        - name: "limit"
+          description: "取得件数"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "いいねされた人の一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/LikeGetResponse'
+
+  /skips/:
+    get:
+      tags:
+        - "skips"
+      summary: "スキップした人一覧"
+      parameters: # リクエストパラメータ
+        - name: "user_id"
+          description: "ユーザーID"
+          in: "query"
+          schema:
+            type: "integer"
+        - name: "limit"
+          description: "取得件数"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "スキップした人の一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/SkipGetResponse'
+    put:
+      tags:
+        - "skips"
+      summary: "スキップ登録"
+      operationId: "addSkip"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SkipPutAndPostRequests"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /skips/{id}/:
+    post:
+      tags:
+        - "skips"
+      summary: "スキップ更新"
+      operationId: "editSkip"
+      parameters: # リクエストパラメータ
+        - name: "id"
+          in: 'path' # パラメータをパス内に含める
+          description: "スキップID"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/SkipPutAndPostRequests"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+    delete:
+      tags:
+        - "skips"
+      summary: "スキップ削除"
+      parameters: # リクエストパラメータ
+        - name: "id"
+          in: "path" # パラメータをパス内に含める
+          description: "ID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /target_skips/:
+    get:
+      tags:
+        - "skips"
+      summary: "スキップされた人一覧"
+      parameters: # リクエストパラメータ
+        - name: "user_id"
+          description: "ユーザーID"
+          in: "query"
+          schema:
+            type: "integer"
+        - name: "limit"
+          description: "取得件数"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "スキップされた人の一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/SkipGetResponse'
+
+  /blocks/:
+    get:
+      tags:
+        - "blocks"
+      summary: "ブロックした人一覧"
+      parameters: # リクエストパラメータ
+        - name: "user_id"
+          description: "ユーザーID"
+          in: "query"
+          schema:
+            type: "integer"
+        - name: "limit"
+          description: "取得件数"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "ブロックした人の一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/BlockGetResponse'
+    put:
+      tags:
+        - "blocks"
+      summary: "ブロック登録"
+      operationId: "addBlock"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlockPutAndPostRequests"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /blocks/{id}/:
+    post:
+      tags:
+        - "blocks"
+      summary: "ブロック更新"
+      operationId: "editBlock"
+      parameters: # リクエストパラメータ
+        - name: "id"
+          in: 'path' # パラメータをパス内に含める
+          description: "ブロックID"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BlockPutAndPostRequests"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+    delete:
+      tags:
+        - "blocks"
+      summary: "ブロック削除"
+      parameters: # リクエストパラメータ
+        - name: "id"
+          in: "path" # パラメータをパス内に含める
+          description: "ID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /target_blocks/:
+    get:
+      tags:
+        - "blocks"
+      summary: "ブロックされた人一覧"
+      parameters: # リクエストパラメータ
+        - name: "user_id"
+          description: "ユーザーID"
+          in: "query"
+          schema:
+            type: "integer"
+        - name: "limit"
+          description: "取得件数"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "ブロックされた人一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/BlockGetResponse'
+
 components:
   schemas:
-    UserResponse:
-      description: "ユーザモデル"
-      type: object
+    UserSearchConditions:
+      description: "ユーザー検索条件情報"
+      type: "object"
+      properties:
+        user_id:
+          type: "integer"
+          description: "ユーザーID"
+        age_min:
+          type: "integer"
+          description: "年齢（MIN）"
+        age_max:
+          type: "integer"
+          description: "年齢（MAX）"
+        prefecture:
+          type: "object"
+          items:
+            type: "integer"
+          description: "居住地"
+        height_min:
+          type: "integer"
+          description: "身長（MIN）"
+        height_max:
+          type: "integer"
+          description: "身長（MAX）"
+        body_shape:
+          type: "object"
+          items:
+            type: "integer"
+          description: "体型"
+        prefecture_of_birth:
+          type: "object"
+          items:
+            type: "integer"
+          description: "出身地"
+        education:
+          type: "object"
+          items:
+            type: "integer"
+          description: "学歴"
+        annual_income_min:
+          type: "integer"
+          description: "年収（MIN）"
+        annual_income_max:
+          type: "integer"
+          description: "年収（MAX）"
+        children:
+          type: "integer"
+          description: "子供の有無"
+        job:
+          type: "object"
+          items:
+            type: "integer"
+          description: "職業"
+        hope_to_meet:
+          type: "object"
+          items:
+            type: "integer"
+          description: "出会うまでの希望"
+        personality:
+          type: "object"
+          items:
+            type: "integer"
+          description: "性格・タイプ"
+        favorite_place:
+          type: "object"
+          items:
+            type: "integer"
+          description: "よく行く場所"
+        hobby:
+          type: "object"
+          items:
+            type: "integer"
+          description: "好きなこと・趣味"
+        drink:
+          type: "boolean"
+          description: "お酒"
+        cigarettes:
+          type: "boolean"
+          description: "タバコ"
+        holiday:
+          type: "object"
+          items:
+            type: "integer"
+          description: "休日"
+
+    Prefectures:
+      description: "都道府県マスタ"
+      type: "object"
       properties:
         id:
-          type: integer
+          type: "integer"
+          description: "ID"
         name:
-          type: string
+          type: "string"
+          description: "都道府県名"
+
+    Gender:
+      description: "性別マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    JobOptions:
+      description: "職業マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "職業"
+
+    UserImages:
+      description: "ユーザー画像情報"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        storage_path:
+          type: "string"
+          description: "ストレージパス"
+        download_url:
+          type: "string"
+          description: "画像URL"
+
+    AgeApprovalStatus:
+      description: "年齢確認をしたどうかのステータス"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    FigureOptions:
+      description: "体型マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "体型名"
+
+    EducationOptions:
+      description: "学歴マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "学歴"
+
+    LanguageOptions:
+      description: "使用言語マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    SiblingOptions:
+      description: "兄弟姉妹マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    SociabilityOptions:
+      description: "社交性マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    HousemateOptions:
+      description: "同居人マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    FutureMoveOptions:
+      description: "将来引っ越しマスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    BloodTypeOptions:
+      description: "血液型マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    MarriageHistoryOptions:
+      description: "結婚歴マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    HasChildrenOptions:
+      description: "子供の有無マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "選択肢名"
+
+    SmokingOptions:
+      description: "タバコ選択肢マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "名称"
+
+    DrinkOptions:
+      description: "お酒選択肢マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "名称"
+
+    PersonalityOptions:
+      description: "性格・タイプマスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "名称"
+
+    IncomeOptions:
+      description: "年収マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "項目名"
+
+    HolidayOptions:
+      description: "休日マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "名称"
+
+    ProcessToMeetOptions:
+      description: "出会うまでの希望マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "名称"
+
+    ImportantOptions:
+      description: "お相手探しで重視すること"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    DatingFeeOptions:
+      description: "最初のデート料金"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: ""
+
+    LikeTypes:
+      description: "いいね種別マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "いいね種別"
+
+    BlockTypes:
+      description: "ブロック種別マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "名称"
+
+    UserGetResponse:
+      description: "ユーザモデル"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ユーザーID"
+        nickname:
+          type: "string"
           nullable: true
+          description: "ニックネーム"
+        birthday:
+          type: "string"
+          format: "date"
+          nullable: true
+          description: "生年月日"
         age:
-          type: integer
-        weight:
-          type: integer
-          nullable: true
-        created_at:
-          type: string
-        updated_at:
-          type: string
+          type: "integer"
+          description: "年齢"
+        prefecture: # 居住地
+          $ref: '#/components/schemas/Prefectures'
+        gender: # 性別
+          $ref: '#/components/schemas/Gender'
+        height:
+          type: "integer"
+          description: "身長"
+        job: # 職業
+          $ref: '#/components/schemas/JobOptions'
+        introduction_text:
+          type: "string"
+          description: "自己紹介"
+        image: # 画像
+          type: "array"
+          items:
+            $ref: '#/components/schemas/UserImages'
+        # TODO
+        numOfLikes:
+          type: "integer"
+          description: "他ユーザからいいねされた数"
+        # TODO
+        numOfPoints:
+          type: "integer"
+          description: "ユーザが現在保持しているポイント数"
+        age_approval_status: # 年齢確認ステータス
+          $ref: '#/components/schemas/AgeApprovalStatus'
+        # TODO:: wisper
+        figure: # 体型
+          $ref: '#/components/schemas/FigureOptions'
+        birth_of_prefecture: # 出身地
+          $ref: '#/components/schemas/Prefectures'
+        education: # 学歴
+          $ref: '#/components/schemas/EducationOptions'
+        language: # 使用言語
+          $ref: '#/components/schemas/LanguageOptions'
+        sibling: # 兄弟姉妹
+          $ref: '#/components/schemas/SiblingOptions'
+        sociability: # 社交性
+          type: "array"
+          items:
+            $ref: '#/components/schemas/SociabilityOptions'
+        housemate: # 同居人
+          $ref: '#/components/schemas/HousemateOptions'
+        future_move: # 将来引越し可能か
+          $ref: '#/components/schemas/FutureMoveOptions'
+        blood_type: # 血液型
+          $ref: '#/components/schemas/BloodTypeOptions'
+        marriage_history: # 結婚歴
+          $ref: '#/components/schemas/MarriageHistoryOptions'
+        has_child: # 子供
+          $ref: '#/components/schemas/HasChildrenOptions'
+        smoking: # タバコ
+          $ref: '#/components/schemas/SmokingOptions'
+        drink: # お酒
+          $ref: '#/components/schemas/DrinkOptions'
+        personality: # 性格・タイプ
+          type: "array"
+          items:
+            $ref: '#/components/schemas/PersonalityOptions'
+        income: # 年収
+          $ref: '#/components/schemas/IncomeOptions'
+        holiday: # 休日
+          type: "array"
+          items:
+            $ref: '#/components/schemas/HolidayOptions'
+        process_to_meet: # 出会うまでの希望
+          $ref: '#/components/schemas/ProcessToMeetOptions'
+        important: # お相手探しで重視すること
+          $ref: '#/components/schemas/ImportantOptions'
+        dating_fee: # 最初のデート料金
+          $ref: '#/components/schemas/DatingFeeOptions'
       example:
         id: 1
-        name: koba
-        age: 33
-        weight: 80
-        created_at: "2014-10-10T13:50:40+09:00"
-        updated_at: "2014-10-10T13:50:40+09:00"
+        nickname: "ニックネーム"
+        birthday: "2014-10-10"
+        age: 20
+        prefecture:
+          id: 1 # ex)1:東京
+          name: "東京"
+        gender:
+          id: 1 # 男性:1、女性:2
+          name: "男性"
+        height: 170
+        job:
+          id: 1 # ex)1:会社員
+          name: "会社員"
+        introduction_text: "自己紹介"
+        image:
+          - id: 1
+            storage_path: "http://imagePath1"
+            download_url: "http://imagePath1"
+          - id: 2
+            storage_path: "http://imagePath2"
+            download_url: "http://imagePath2"
+          - id: 3
+            storage_path: "http://imagePath3"
+            download_url: "http://imagePath3"
+          - id: 4
+            storage_path: "http://imagePath4"
+            download_url: "http://imagePath4"
+          - id: 5
+            storage_path: "http://imagePath5"
+            download_url: "http://imagePath5"
+          - id: 6
+            storage_path: "http://imagePath6"
+            download_url: "http://imagePath6"
+        numOfLikes: 100
+        numOfPoints: 100
+        age_approval_status:
+          id: 1 # 1:未審査,2:審査済,3:却下
+          name: "未審査"
+        # wisper
+        figure:
+          id: 1 # ex)1:スリム
+          name: "スリム"
+        birth_of_prefecture:
+          id: 1 # ex)1:東京
+          name: "東京"
+        education:
+          id: 1 # ex)1:高卒
+          name: "高卒"
+        language:
+          id: 1 # ex)1:日本語
+          name: "日本語"
+        sibling:
+          id: 1 # ex)ユーザが男性の場合 1:長男,ユーザが女性の場合 1:長女
+          name: "長男"
+        sociability:
+          - id: 1 # ex)1:大人数が好き
+            name: "大人数が好き"
+        housemate:
+          id: 1 # ex)1:一人暮らし
+          name: "一人暮らし"
+        future_move:
+          id: 1 # ex)1:可能
+          name: "可能"
+        blood_type:
+          id: 1 # ex)1:A型
+          name: "A型"
+        marriageHistory:
+          id: 1 # ex)1:未婚
+          name: "未婚"
+        has_child:
+          id: 1 # ex)1:なし
+          name: "なし"
+        smoking:
+          id: 1 # ex)1:吸う
+          name: "吸う"
+        drink:
+          id: 1 # ex)1:飲まない
+          name: "飲まない"
+        personality:
+          - id: 1 # ex)1:優しい
+            name: "優しい"
+        income:
+          id: 1 # ex)1:300万円未満
+          name: "300万円未満"
+        holiday:
+          - id: 1 # ex)1:月曜
+            name: "月曜"
+          - id: 2
+            name: "火曜"
+        process_to_meet:
+          id: 1 # ex)1:マッチングしたらできるだけ早くまずお会いしてみたい
+          name: "マッチングしたらできるだけ早くまずお会いしてみたい"
+        important:
+          id: 1 # ex)1:年齢・写真の印象
+          name: "年齢・写真の印象"
+        dating_fee:
+          id: 1 # ex)1:初回デート費用
+          name: "初回デート費用"
+
+    UserPutRequests:
+      description: "ユーザモデル"
+      type: "object"
+      required:
+        - "id"
+        - "nickname"
+        - "birthday"
+      properties:
+        id:
+          type: "integer"
+          description: "ユーザーID"
+        nickname:
+          type: "string"
+          description: "ニックネーム"
+        birthday:
+          type: "string"
+          format: "date"
+          description: "生年月日"
+        prefecture_id:
+          type: "integer"
+          description: "居住地"
+        gender_id:
+          type: "integer"
+          description: "性別"
+        height:
+          type: "integer"
+          description: "身長"
+        job_id:
+          type: "integer"
+          description: "職業"
+        introduction_text:
+          type: "string"
+          description: "自己紹介"
+        # TODO:: 画像
+        age_approval_status:
+          type: "integer"
+          description: "年齢確認ステータス"
+        # TODO:: wisper
+        figure_id:
+          type: "integer"
+          description: "体型"
+        birth_of_prefecture_id:
+          type: "integer"
+          description: "出身地"
+        education_id:
+          type: "integer"
+          description: "学歴"
+        language_id:
+          type: "integer"
+          description: "使用言語"
+        sibling_id:
+          type: "integer"
+          description: "兄弟姉妹"
+        sociability:
+          type: "array"
+          items:
+            type: "integer"
+          description: "社交性"
+        housemate_id:
+          type: "integer"
+          description: "同居人"
+        future_move_id:
+          type: "integer"
+          description: "将来引越し可能か"
+        blood_type_id:
+          type: "integer"
+          description: "血液型"
+        marriage_history_id:
+          type: "integer"
+          description: "結婚歴"
+        has_child_id:
+          type: "integer"
+          description: "子供"
+        smoking_id:
+          type: "integer"
+          description: "タバコ"
+        drink_id:
+          type: "integer"
+          description: "お酒"
+        personality:
+          type: "array"
+          items:
+            type: "integer"
+          description: "性格・タイプ"
+        income_id:
+          type: "integer"
+          description: "年収"
+        holiday:
+          type: "array"
+          items:
+            type: "integer"
+          description: "休日"
+        process_to_meet_id:
+          type: "integer"
+          description: "出会うまでの希望"
+        important_id:
+          type: "integer"
+          description: "お相手探しで重視すること"
+        dating_fee_id:
+          type: "integer"
+          description: "最初のデート料金"
+
+    UserPostRequests:
+      description: "ユーザモデル"
+      type: "object"
+      required:
+        - "id"
+      properties:
+        id:
+          type: "integer"
+          description: "ユーザーID"
+        nickname:
+          type: "string"
+          description: "ニックネーム"
+        birthday:
+          type: "string"
+          format: "date"
+          description: "生年月日"
+        prefecture_id:
+          type: "integer"
+          description: "居住地"
+        gender_id:
+          type: "integer"
+          description: "性別"
+        height:
+          type: "integer"
+          description: "身長"
+        job_id:
+          type: "integer"
+          description: "職業"
+        introduction_text:
+          type: "string"
+          description: "自己紹介"
+        # TODO:: 画像
+        age_approval_status:
+          type: "integer"
+          description: "年齢確認ステータス"
+        # TODO:: wisper
+        figure_id:
+          type: "integer"
+          description: "体型"
+        birth_of_prefecture_id:
+          type: "integer"
+          description: "出身地"
+        education_id:
+          type: "integer"
+          description: "学歴"
+        language_id:
+          type: "integer"
+          description: "使用言語"
+        sibling_id:
+          type: "integer"
+          description: "兄弟姉妹"
+        sociability:
+          type: "array"
+          items:
+            type: "integer"
+          description: "社交性"
+        housemate_id:
+          type: "integer"
+          description: "同居人"
+        future_move_id:
+          type: "integer"
+          description: "将来引越し可能か"
+        blood_type_id:
+          type: "integer"
+          description: "血液型"
+        marriage_history_id:
+          type: "integer"
+          description: "結婚歴"
+        has_child_id:
+          type: "integer"
+          description: "子供"
+        smoking_id:
+          type: "integer"
+          description: "タバコ"
+        drink_id:
+          type: "integer"
+          description: "お酒"
+        personality:
+          type: "array"
+          items:
+            type: "integer"
+          description: "性格・タイプ"
+        income_id:
+          type: "integer"
+          description: "年収"
+        holiday:
+          type: "array"
+          items:
+            type: "integer"
+          description: "休日"
+        process_to_meet_id:
+          type: "integer"
+          description: "出会うまでの希望"
+        important_id:
+          type: "integer"
+          description: "お相手探しで重視すること"
+        dating_fee_id:
+          type: "integer"
+          description: "最初のデート料金"
+
+    LikeGetResponse:
+      description: "いいねモデル"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        user_id:
+          type: "integer"
+          description: "ユーザーID"
+        image: # 画像
+          type: "array"
+          items:
+            $ref: '#/components/schemas/UserImages'
+        nickname:
+          type: "string"
+          nullable: true
+          description: "ニックネーム"
+        birthday:
+          type: "string"
+          format: "date"
+          nullable: true
+          description: "生年月日"
+        age:
+          type: "integer"
+          description: "年齢"
+        prefecture: # 居住地
+          $ref: '#/components/schemas/Prefectures'
+        height:
+          type: "integer"
+          description: "身長"
+        job: # 職業
+          $ref: '#/components/schemas/JobOptions'
+        type: # いいね種別
+          $ref: '#/components/schemas/LikeTypes'
+        liked_at:
+          type: "string"
+          format: "date-time"
+      example:
+        id: 1
+        user_id: 1
+        image:
+          - id: 1
+            storage_path: "http://imagePath1"
+            download_url: "http://imagePath1"
+        nickname: "ニックネーム"
+        birthday: "2014-10-10"
+        age: 20
+        prefecture:
+          id: 1 # ex)1:東京
+          name: "東京"
+        height: 170
+        job:
+          id: 1 # ex)1:会社員
+          name: "会社員"
+        type:
+          id: 1
+          name: "通常"
+        liked_at: "2014-10-10T13:50:40+09:00"
+
+    LikePutAndPostRequests:
+      description: "いいねモデル"
+      type: "object"
+      required:
+        - "user_id"
+        - "type"
+        - "target_user_id"
+      properties:
+        user_id:
+          type: "integer"
+          description: "ユーザーID"
+        type:
+          type: "integer"
+          description: "いいね種別"
+        target_user_id:
+          type: "integer"
+          description: "いいねユーザーID"
+
+    SkipGetResponse:
+      description: "スキップモデル"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        user_id:
+          type: "integer"
+          description: "ユーザーID"
+        image: # 画像
+          type: "array"
+          items:
+            $ref: '#/components/schemas/UserImages'
+        nickname:
+          type: "string"
+          nullable: true
+          description: "ニックネーム"
+        birthday:
+          type: "string"
+          format: "date"
+          nullable: true
+          description: "生年月日"
+        age:
+          type: "integer"
+          description: "年齢"
+        prefecture: # 居住地
+          $ref: '#/components/schemas/Prefectures'
+        height:
+          type: "integer"
+          description: "身長"
+        job: # 職業
+          $ref: '#/components/schemas/JobOptions'
+        skipped_at: # スキップ日時
+          type: "string"
+          format: "date-time"
+      example:
+        id: 1
+        user_id: 1
+        image:
+          - id: 1
+            storage_path: "http://imagePath1"
+            download_url: "http://imagePath1"
+        nickname: "ニックネーム"
+        birthday: "2014-10-10"
+        age: 20
+        prefecture:
+          id: 1 # ex)1:東京
+          name: "東京"
+        height: 170
+        job:
+          id: 1 # ex)1:会社員
+          name: "会社員"
+        skipped_at: "2014-10-10T13:50:40+09:00"
+
+    SkipPutAndPostRequests:
+      description: "スキップモデル"
+      type: "object"
+      required:
+        - "user_id"
+        - "target_user_id"
+      properties:
+        user_id:
+          type: "integer"
+          description: "ユーザーID"
+        target_user_id:
+          type: "integer"
+          description: "スキップユーザーID"
+
+    BlockGetResponse:
+      description: "ブロックモデル"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        user_id:
+          type: "integer"
+          description: "ユーザーID"
+        image: # 画像
+          type: "array"
+          items:
+            $ref: '#/components/schemas/UserImages'
+        nickname:
+          type: "string"
+          nullable: true
+          description: "ニックネーム"
+        birthday:
+          type: "string"
+          format: "date"
+          nullable: true
+          description: "生年月日"
+        age:
+          type: "integer"
+          description: "年齢"
+        prefecture: # 居住地
+          $ref: '#/components/schemas/Prefectures'
+        height:
+          type: "integer"
+          description: "身長"
+        job: # 職業
+          $ref: '#/components/schemas/JobOptions'
+        reason: # ブロック理由
+          $ref: '#/components/schemas/BlockTypes'
+      example:
+        id: 1
+        user_id: 1
+        image:
+          - id: 1
+            storage_path: "http://imagePath1"
+            download_url: "http://imagePath1"
+        nickname: "ニックネーム"
+        birthday: "2014-10-10"
+        age: 20
+        prefecture:
+          id: 1 # ex)1:東京
+          name: "東京"
+        height: 170
+        job:
+          id: 1 # ex)1:会社員
+          name: "会社員"
+        reason:
+          id: 1
+          name: "ブロック名称"
+
+    BlockPutAndPostRequests:
+      description: "ブロックモデル"
+      type: "object"
+      required:
+        - "user_id"
+        - "reason_id"
+        - "blocked_user_id"
+      properties:
+        user_id:
+          type: "integer"
+          description: "ユーザーID"
+        reason_id:
+          type: "integer"
+          description: "ブロック理由"
+        blocked_user_id:
+          type: "integer"
+          description: "ブロックされたユーザーID"
