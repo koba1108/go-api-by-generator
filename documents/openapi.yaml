@@ -19,6 +19,8 @@ tags:
     description: "スキップ"
   - name: "blocks"
     description: "ブロック"
+  - name: "searches"
+    description: "検索条件"
 paths:
   /users:
     get:
@@ -36,14 +38,20 @@ paths:
           in: "query"
           schema:
             type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
         - name: "page"
           description: "ページング用パラメータ"
           in: "query"
           schema:
             type: "object"
             properties:
-              user:
-                $ref: '#/components/schemas/UserSearchConditions'
+              # ページの判別が必要
+              #user:
+              #  $ref: '#/components/schemas/UserSearchConditions'
               userId:
                 type: "integer"
       responses:
@@ -52,9 +60,21 @@ paths:
           content:
             application/json:
               schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/UserGetResponse'
+                type: "object"
+                properties:
+                  users:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/UserGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
     put:
       tags:
         - "users"
@@ -127,15 +147,32 @@ paths:
           in: "query"
           schema:
             type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
       responses:
         200:
           description: "いいねした人の一覧を返します"
           content:
             application/json:
               schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/LikeGetResponse'
+                type: "object"
+                properties:
+                  likes:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/LikeGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
     put:
       tags:
         - "likes"
@@ -208,15 +245,32 @@ paths:
           in: "query"
           schema:
             type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
       responses:
         200:
           description: "いいねされた人の一覧を返します"
           content:
             application/json:
               schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/LikeGetResponse'
+                type: "object"
+                properties:
+                  likes:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/LikeGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
 
   /skips/:
     get:
@@ -234,15 +288,33 @@ paths:
           in: "query"
           schema:
             type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
       responses:
         200:
           description: "スキップした人の一覧を返します"
           content:
             application/json:
               schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/SkipGetResponse'
+                type: "object"
+                properties:
+                  skips:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/SkipGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
+
     put:
       tags:
         - "skips"
@@ -315,15 +387,32 @@ paths:
           in: "query"
           schema:
             type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
       responses:
         200:
           description: "スキップされた人の一覧を返します"
           content:
             application/json:
               schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/SkipGetResponse'
+                type: "object"
+                properties:
+                  skips:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/SkipGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
 
   /blocks/:
     get:
@@ -341,15 +430,32 @@ paths:
           in: "query"
           schema:
             type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
       responses:
         200:
           description: "ブロックした人の一覧を返します"
           content:
             application/json:
               schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/BlockGetResponse'
+                type: "object"
+                properties:
+                  blocks:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/BlockGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
     put:
       tags:
         - "blocks"
@@ -422,15 +528,90 @@ paths:
           in: "query"
           schema:
             type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
       responses:
         200:
           description: "ブロックされた人一覧を返します"
           content:
             application/json:
               schema:
-                type: "array"
-                items:
-                  $ref: '#/components/schemas/BlockGetResponse'
+                type: "object"
+                properties:
+                  blocks:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/BlockGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
+
+  /searches/:
+    get:
+      tags:
+        - "searches"
+      summary: "検索条件の取得"
+      parameters: # リクエストパラメータ
+        - name: "user_id"
+          description: "ユーザーID"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "検索条件を返します"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserSearchConditions'
+    put:
+      tags:
+        - "searches"
+      summary: "検索条件登録"
+      operationId: "addSearche"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserSearchConditions"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /searches/{id}/:
+    post:
+      tags:
+        - "searches"
+      summary: "検索条件更新"
+      operationId: "editSearche"
+      parameters: # リクエストパラメータ
+        - name: "id"
+          in: 'path' # パラメータをパス内に含める
+          description: "ブロックID"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserSearchConditions"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
 
 components:
   schemas:
