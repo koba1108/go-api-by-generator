@@ -22,11 +22,29 @@ tags:
   - name: "searches"
     description: "検索条件"
 paths:
+  /user:
+    get:
+      tags:
+        - "users"
+      summary: "ユーザー取得"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: "ユーザの情報を返します"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserGetResponse'
+        400:
+          description: "NG"
   /users:
     get:
       tags:
         - "users"
       summary: "ユーザー一覧"
+      security:
+        - Bearer: []
       parameters: # リクエストパラメータ
         - name: "order_by"
           description: "並び順"
@@ -44,16 +62,13 @@ paths:
           schema:
             type: "integer"
         - name: "page"
-          description: "ページング用パラメータ"
+          description: "検索条件"
           in: "query"
           schema:
             type: "object"
             properties:
-              # ページの判別が必要
-              #user:
-              #  $ref: '#/components/schemas/UserSearchConditions'
-              userId:
-                type: "integer"
+              search:
+                $ref: '#/components/schemas/UserSearchConditions'
       responses:
         200:
           description: "ユーザの一覧を返します"
@@ -75,10 +90,14 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+        400:
+          description: "NG"
     put:
       tags:
         - "users"
       summary: "ユーザー登録"
+      security:
+        - Bearer: []
       operationId: "addUsers"
       requestBody:
         content:
@@ -90,20 +109,13 @@ paths:
           description: "OK"
         400:
           description: "NG"
-
-  /users/{userId}:
     post:
       tags:
         - "users"
       summary: "ユーザー更新"
+      security:
+        - Bearer: []
       operationId: "editUsers"
-      parameters: # リクエストパラメータ
-        - name: "userId"
-          in: 'path' # パラメータをパス内に含める
-          description: "ユーザーID"
-          required: true
-          schema:
-            type: "integer"
       requestBody:
         content:
           application/json:
@@ -118,13 +130,8 @@ paths:
       tags:
         - "users"
       summary: "ユーザー削除"
-      parameters: # リクエストパラメータ
-        - name: "userId"
-          in: "path" # パラメータをパス内に含める
-          description: "ユーザーID"
-          required: true
-          schema:
-            type: "integer"
+      security:
+        - Bearer: []
       responses:
         200:
           description: "OK"
@@ -136,12 +143,9 @@ paths:
       tags:
         - "likes"
       summary: "いいねした人一覧"
+      security:
+        - Bearer: []
       parameters: # リクエストパラメータ
-        - name: "user_id"
-          description: "ユーザーID"
-          in: "query"
-          schema:
-            type: "integer"
         - name: "limit"
           description: "取得件数"
           in: "query"
@@ -173,16 +177,26 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+        400:
+          description: "NG"
     put:
       tags:
         - "likes"
       summary: "いいね登録"
+      security:
+        - Bearer: []
       operationId: "addLike"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LikePutAndPostRequests"
+              type: "object"
+              required:
+                - "target_user_id"
+              properties:
+                target_user_id:
+                  type: "integer"
+                  description: "いいねユーザーID"
       responses:
         200:
           description: "OK"
@@ -194,6 +208,8 @@ paths:
       tags:
         - "likes"
       summary: "いいね更新"
+      security:
+        - Bearer: []
       operationId: "editLike"
       parameters: # リクエストパラメータ
         - name: "id"
@@ -206,23 +222,13 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/LikePutAndPostRequests"
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "NG"
-    delete:
-      tags:
-        - "likes"
-      summary: "いいね削除"
-      parameters: # リクエストパラメータ
-        - name: "id"
-          in: "path" # パラメータをパス内に含める
-          description: "いいねID"
-          required: true
-          schema:
-            type: "integer"
+              type: "object"
+              required:
+                - "type"
+              properties:
+                type:
+                  type: "integer"
+                  description: "いいね種別"
       responses:
         200:
           description: "OK"
@@ -234,12 +240,9 @@ paths:
       tags:
         - "likes"
       summary: "いいねされた人一覧"
+      security:
+        - Bearer: []
       parameters: # リクエストパラメータ
-        - name: "user_id"
-          description: "ユーザーID"
-          in: "query"
-          schema:
-            type: "integer"
         - name: "limit"
           description: "取得件数"
           in: "query"
@@ -271,18 +274,17 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+        400:
+          description: "NG"
 
   /skips/:
     get:
       tags:
         - "skips"
       summary: "スキップした人一覧"
+      security:
+        - Bearer: []
       parameters: # リクエストパラメータ
-        - name: "user_id"
-          description: "ユーザーID"
-          in: "query"
-          schema:
-            type: "integer"
         - name: "limit"
           description: "取得件数"
           in: "query"
@@ -314,17 +316,26 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
-
+        400:
+          description: "NG"
     put:
       tags:
         - "skips"
       summary: "スキップ登録"
+      security:
+        - Bearer: []
       operationId: "addSkip"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/SkipPutAndPostRequests"
+              type: "object"
+              required:
+                - "target_user_id"
+              properties:
+                target_user_id:
+                  type: "integer"
+                  description: "スキップユーザーID"
       responses:
         200:
           description: "OK"
@@ -336,32 +347,13 @@ paths:
       tags:
         - "skips"
       summary: "スキップ更新"
+      security:
+        - Bearer: []
       operationId: "editSkip"
       parameters: # リクエストパラメータ
         - name: "id"
           in: 'path' # パラメータをパス内に含める
           description: "スキップID"
-          required: true
-          schema:
-            type: "integer"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/SkipPutAndPostRequests"
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "NG"
-    delete:
-      tags:
-        - "skips"
-      summary: "スキップ削除"
-      parameters: # リクエストパラメータ
-        - name: "id"
-          in: "path" # パラメータをパス内に含める
-          description: "ID"
           required: true
           schema:
             type: "integer"
@@ -376,12 +368,9 @@ paths:
       tags:
         - "skips"
       summary: "スキップされた人一覧"
+      security:
+        - Bearer: []
       parameters: # リクエストパラメータ
-        - name: "user_id"
-          description: "ユーザーID"
-          in: "query"
-          schema:
-            type: "integer"
         - name: "limit"
           description: "取得件数"
           in: "query"
@@ -413,18 +402,17 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+        400:
+          description: "NG"
 
   /blocks/:
     get:
       tags:
         - "blocks"
       summary: "ブロックした人一覧"
+      security:
+        - Bearer: []
       parameters: # リクエストパラメータ
-        - name: "user_id"
-          description: "ユーザーID"
-          in: "query"
-          schema:
-            type: "integer"
         - name: "limit"
           description: "取得件数"
           in: "query"
@@ -456,16 +444,30 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+        400:
+          description: "NG"
     put:
       tags:
         - "blocks"
       summary: "ブロック登録"
+      security:
+        - Bearer: []
       operationId: "addBlock"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/BlockPutAndPostRequests"
+              type: "object"
+              required:
+                - "reason_id"
+                - "blocked_user_id"
+              properties:
+                reason_id:
+                  type: "integer"
+                  description: "ブロック理由"
+                blocked_user_id:
+                  type: "integer"
+                  description: "ブロックされたユーザーID"
       responses:
         200:
           description: "OK"
@@ -473,32 +475,12 @@ paths:
           description: "NG"
 
   /blocks/{id}/:
-    post:
-      tags:
-        - "blocks"
-      summary: "ブロック更新"
-      operationId: "editBlock"
-      parameters: # リクエストパラメータ
-        - name: "id"
-          in: 'path' # パラメータをパス内に含める
-          description: "ブロックID"
-          required: true
-          schema:
-            type: "integer"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/BlockPutAndPostRequests"
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "NG"
     delete:
       tags:
         - "blocks"
       summary: "ブロック削除"
+      security:
+        - Bearer: []
       parameters: # リクエストパラメータ
         - name: "id"
           in: "path" # パラメータをパス内に含める
@@ -512,60 +494,13 @@ paths:
         400:
           description: "NG"
 
-  /target_blocks/:
-    get:
-      tags:
-        - "blocks"
-      summary: "ブロックされた人一覧"
-      parameters: # リクエストパラメータ
-        - name: "user_id"
-          description: "ユーザーID"
-          in: "query"
-          schema:
-            type: "integer"
-        - name: "limit"
-          description: "取得件数"
-          in: "query"
-          schema:
-            type: "integer"
-        - name: "offset"
-          description: "開始位置"
-          in: "query"
-          schema:
-            type: "integer"
-      responses:
-        200:
-          description: "ブロックされた人一覧を返します"
-          content:
-            application/json:
-              schema:
-                type: "object"
-                properties:
-                  blocks:
-                    type: "array"
-                    items:
-                      $ref: '#/components/schemas/BlockGetResponse'
-                  totalCount:
-                    type: "integer"
-                    description: "総件数"
-                  offset:
-                    type: "integer"
-                    description: "開始位置"
-                  limit:
-                    type: "integer"
-                    description: "取得件数"
-
   /searches/:
     get:
       tags:
         - "searches"
       summary: "検索条件の取得"
-      parameters: # リクエストパラメータ
-        - name: "user_id"
-          description: "ユーザーID"
-          in: "query"
-          schema:
-            type: "integer"
+      security:
+        - Bearer: []
       responses:
         200:
           description: "検索条件を返します"
@@ -573,16 +508,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserSearchConditions'
+        400:
+          description: "NG"
     put:
       tags:
         - "searches"
       summary: "検索条件登録"
+      security:
+        - Bearer: []
       operationId: "addSearche"
       requestBody:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserSearchConditions"
+              $ref: '#/components/schemas/SearchPutRequest'
       responses:
         200:
           description: "OK"
@@ -598,7 +537,7 @@ paths:
       parameters: # リクエストパラメータ
         - name: "id"
           in: 'path' # パラメータをパス内に含める
-          description: "ブロックID"
+          description: "ID"
           required: true
           schema:
             type: "integer"
@@ -614,6 +553,11 @@ paths:
           description: "NG"
 
 components:
+  securitySchemes:
+    Bearer:
+      type: "http"
+      scheme: "bearer"
+      description: "Credentials or access token for API"
   schemas:
     UserSearchConditions:
       description: "ユーザー検索条件情報"
@@ -979,7 +923,7 @@ components:
           description: "名称"
 
     UserGetResponse:
-      description: "ユーザモデル"
+      description: "ユーザ一覧"
       type: "object"
       properties:
         id:
@@ -1170,16 +1114,12 @@ components:
           name: "初回デート費用"
 
     UserPutRequests:
-      description: "ユーザモデル"
+      description: "ユーザ登録"
       type: "object"
       required:
-        - "id"
         - "nickname"
         - "birthday"
       properties:
-        id:
-          type: "integer"
-          description: "ユーザーID"
         nickname:
           type: "string"
           description: "ニックネーム"
@@ -1202,7 +1142,17 @@ components:
         introduction_text:
           type: "string"
           description: "自己紹介"
-        # TODO:: 画像
+        image: # 画像
+          type: "array"
+          items:
+            type: "object"
+            properties:
+              storage_path:
+                type: "string"
+                description: "ストレージパス"
+              download_url:
+                type: "string"
+                description: "画像URL"
         age_approval_status:
           type: "integer"
           description: "年齢確認ステータス"
@@ -1272,7 +1222,7 @@ components:
           description: "最初のデート料金"
 
     UserPostRequests:
-      description: "ユーザモデル"
+      description: "ユーザー更新"
       type: "object"
       required:
         - "id"
@@ -1302,7 +1252,10 @@ components:
         introduction_text:
           type: "string"
           description: "自己紹介"
-        # TODO:: 画像
+        image: # 画像
+          type: "array"
+          items:
+            $ref: '#/components/schemas/UserImages'
         age_approval_status:
           type: "integer"
           description: "年齢確認ステータス"
@@ -1372,7 +1325,7 @@ components:
           description: "最初のデート料金"
 
     LikeGetResponse:
-      description: "いいねモデル"
+      description: "いいね一覧"
       type: "object"
       properties:
         id:
@@ -1431,26 +1384,8 @@ components:
           name: "通常"
         liked_at: "2014-10-10T13:50:40+09:00"
 
-    LikePutAndPostRequests:
-      description: "いいねモデル"
-      type: "object"
-      required:
-        - "user_id"
-        - "type"
-        - "target_user_id"
-      properties:
-        user_id:
-          type: "integer"
-          description: "ユーザーID"
-        type:
-          type: "integer"
-          description: "いいね種別"
-        target_user_id:
-          type: "integer"
-          description: "いいねユーザーID"
-
     SkipGetResponse:
-      description: "スキップモデル"
+      description: "スキップ一覧"
       type: "object"
       properties:
         id:
@@ -1504,22 +1439,8 @@ components:
           name: "会社員"
         skipped_at: "2014-10-10T13:50:40+09:00"
 
-    SkipPutAndPostRequests:
-      description: "スキップモデル"
-      type: "object"
-      required:
-        - "user_id"
-        - "target_user_id"
-      properties:
-        user_id:
-          type: "integer"
-          description: "ユーザーID"
-        target_user_id:
-          type: "integer"
-          description: "スキップユーザーID"
-
     BlockGetResponse:
-      description: "ブロックモデル"
+      description: "ブロック一覧"
       type: "object"
       properties:
         id:
@@ -1574,20 +1495,84 @@ components:
           id: 1
           name: "ブロック名称"
 
-    BlockPutAndPostRequests:
-      description: "ブロックモデル"
+    SearchPutRequest:
+      description: "ユーザー検索条件情報"
       type: "object"
-      required:
-        - "user_id"
-        - "reason_id"
-        - "blocked_user_id"
       properties:
-        user_id:
+        age_min:
           type: "integer"
-          description: "ユーザーID"
-        reason_id:
+          description: "年齢（MIN）"
+        age_max:
           type: "integer"
-          description: "ブロック理由"
-        blocked_user_id:
+          description: "年齢（MAX）"
+        prefecture:
+          type: "object"
+          items:
+            type: "integer"
+          description: "居住地"
+        height_min:
           type: "integer"
-          description: "ブロックされたユーザーID"
+          description: "身長（MIN）"
+        height_max:
+          type: "integer"
+          description: "身長（MAX）"
+        body_shape:
+          type: "object"
+          items:
+            type: "integer"
+          description: "体型"
+        prefecture_of_birth:
+          type: "object"
+          items:
+            type: "integer"
+          description: "出身地"
+        education:
+          type: "object"
+          items:
+            type: "integer"
+          description: "学歴"
+        annual_income_min:
+          type: "integer"
+          description: "年収（MIN）"
+        annual_income_max:
+          type: "integer"
+          description: "年収（MAX）"
+        children:
+          type: "integer"
+          description: "子供の有無"
+        job:
+          type: "object"
+          items:
+            type: "integer"
+          description: "職業"
+        hope_to_meet:
+          type: "object"
+          items:
+            type: "integer"
+          description: "出会うまでの希望"
+        personality:
+          type: "object"
+          items:
+            type: "integer"
+          description: "性格・タイプ"
+        favorite_place:
+          type: "object"
+          items:
+            type: "integer"
+          description: "よく行く場所"
+        hobby:
+          type: "object"
+          items:
+            type: "integer"
+          description: "好きなこと・趣味"
+        drink:
+          type: "boolean"
+          description: "お酒"
+        cigarettes:
+          type: "boolean"
+          description: "タバコ"
+        holiday:
+          type: "object"
+          items:
+            type: "integer"
+          description: "休日"
