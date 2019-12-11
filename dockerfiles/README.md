@@ -13,9 +13,12 @@ docker tag go-api-by-generator_swagger-ui gcr.io/ykoba-dev/swagger-ui:0.0.1
 docker push gcr.io/ykoba-dev/swagger-ui:0.0.1
 ```
 4. アップロードしたGCPプロジェクトのCloudRun画面からサービスを選択
+```
 https://console.cloud.google.com/run?project=ykoba-dev
+```
 
 5. 新しいバージョンをデプロイをクリックし、アップロードしたイメージを選択後に「デプロイ」をクリック
+
 
 ※ swagger-mockはこっち
 ```
