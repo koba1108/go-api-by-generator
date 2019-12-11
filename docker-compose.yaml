@@ -1,71 +1,58 @@
 version: '3'
 
-#services:
-#  swagger-editor:
-#    container_name: swagger-editor
-#    image: swaggerapi/swagger-editor
-#    ports:
-#      - 9000:8080
-#    restart: always
-#    tty: true
-#  swagger-ui:
-#    container_name: swagger-ui
-#    image: swaggerapi/swagger-ui
-#    ports:
-#      - 9001:8080
-#    volumes:
-#      - ./documents/openapi.yaml:/openapi.yaml
-#    environment:
-#      SWAGGER_JSON: /openapi.yaml
-#    restart: always
-#    tty: true
-#  swagger-mock:
-#    container_name: swagger-mock
-#    image: danielgtaylor/apisprout:latest
-#    ports:
-#      - 9002:8000
-#    volumes:
-#      - ./documents/openapi.yaml:/openapi.yaml
-#    entrypoint: /usr/local/bin/apisprout /openapi.yaml --watch
-#    restart: always
-#    tty: true
-#  db:
-#    container_name: db
-#    image: mysql:5.7
-#    volumes:
-#      - ./db/volumes:/var/lib/mysql
-#    ports:
-#      - 3306:3306
-#    restart: always
-#    tty: true
-#    environment:
-#      MYSQL_ROOT_PASSWORD: pass1234
-#      MYSQL_DATABASE: public
-#  api:
-#    container_name: api
-#    build: .
-#    volumes:
-#      - ./:/go/src/github/go-api-by-generator
-#    ports:
-#      - 8080:8080
-#    environment:
-#      DB_DRIVER: mysql
-#      DB_HOST: db
-#      DB_NAME: public
-#      DB_USER: root
-#      DB_PASSWORD: pass1234
-#    command: go run main.go
-#    restart: always
-#    tty: true
-#    depends_on:
-#      - db
-
 services:
+  swagger-editor:
+    container_name: swagger-editor
+    image: swaggerapi/swagger-editor
+    ports:
+      - 9000:8080
+    restart: always
+    tty: true
   swagger-ui:
+    container_name: swagger-ui
     build:
       context: .
       dockerfile: dockerfiles/swagger-ui/Dockerfile
+    ports:
+      - 9001:8080
+    restart: always
+    tty: true
   swagger-mock:
+    container_name: swagger-mock
     build:
       context: .
       dockerfile: dockerfiles/swagger-mock/Dockerfile
+    ports:
+      - 9002:8000
+    restart: always
+    tty: true
+  db:
+    container_name: db
+    image: mysql:5.7
+    volumes:
+      - ./db/volumes:/var/lib/mysql
+    ports:
+      - 3306:3306
+    restart: always
+    tty: true
+    environment:
+      MYSQL_ROOT_PASSWORD: pass1234
+      MYSQL_DATABASE: public
+  api:
+    container_name: api
+    build: .
+    volumes:
+      - ./:/go/src/github/go-api-by-generator
+    ports:
+      - 8080:8080
+    environment:
+      DB_DRIVER: mysql
+      DB_HOST: db
+      DB_NAME: public
+      DB_USER: root
+      DB_PASSWORD: pass1234
+    command: go run main.go
+    restart: always
+    tty: true
+    depends_on:
+      - db
