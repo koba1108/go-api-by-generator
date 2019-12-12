@@ -11,24 +11,41 @@ servers:
   - url: "https://api.example.com"
     description: "Production server"
 tags:
-  - name: "users"
+  - name: "User"
     description: "ユーザー"
-  - name: "likes"
+  - name: "Like"
     description: "いいね"
-  - name: "skips"
+  - name: "Skip"
     description: "スキップ"
-  - name: "blocks"
+  - name: "ChatRoom"
+    description: "チャットルーム"
+  - name: "Message"
+    description: "メッセージ"
+  - name: "Block"
     description: "ブロック"
-  - name: "searches"
+  - name: "Notification"
+    description: "お知らせ"
+  - name: "Bonus"
+    description: "ボーナス"
+  - name: "Template"
+    description: "メッセージテンプレート"
+  - name: "SettingNotification"
+    description: "通知設定"
+  - name: "Searche"
     description: "検索条件"
+  - name: "Inquiry"
+    description: "問い合わせ"
+  - name: "UserRecommend"
+    description: "おすすめユーザー"
 paths:
   /user:
     get:
       tags:
-        - "users"
+        - "User"
       summary: "ユーザー取得"
       security:
         - Bearer: []
+      operationId: "getUser"
       responses:
         200:
           description: "ユーザの情報を返します"
@@ -38,13 +55,61 @@ paths:
                 $ref: '#/components/schemas/UserGetResponse'
         400:
           description: "NG"
+    put:
+      tags:
+        - "User"
+      summary: "ユーザー登録"
+      security:
+        - Bearer: []
+      operationId: "addUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPutRequests"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+    post:
+      tags:
+        - "User"
+      summary: "ユーザー更新"
+      security:
+        - Bearer: []
+      operationId: "editUser"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserPostRequests"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+    delete:
+      tags:
+        - "User"
+      summary: "ユーザー退会"
+      security:
+        - Bearer: []
+      operationId: "delUser"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
   /users:
     get:
       tags:
-        - "users"
+        - "User"
       summary: "ユーザー一覧"
       security:
         - Bearer: []
+      operationId: "getUsers"
       parameters: # リクエストパラメータ
         - name: "order_by"
           description: "並び順"
@@ -92,59 +157,15 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
-    put:
-      tags:
-        - "users"
-      summary: "ユーザー登録"
-      security:
-        - Bearer: []
-      operationId: "addUsers"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserPutRequests"
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "NG"
-    post:
-      tags:
-        - "users"
-      summary: "ユーザー更新"
-      security:
-        - Bearer: []
-      operationId: "editUsers"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UserPostRequests"
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "NG"
-    delete:
-      tags:
-        - "users"
-      summary: "ユーザー削除"
-      security:
-        - Bearer: []
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "NG"
 
   /likes/:
     get:
       tags:
-        - "likes"
+        - "Like"
       summary: "いいねした人一覧"
       security:
         - Bearer: []
+      operationId: "getLikes"
       parameters: # リクエストパラメータ
         - name: "limit"
           description: "取得件数"
@@ -179,69 +200,15 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
-    put:
-      tags:
-        - "likes"
-      summary: "いいね登録"
-      security:
-        - Bearer: []
-      operationId: "addLike"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: "object"
-              required:
-                - "target_user_id"
-              properties:
-                target_user_id:
-                  type: "integer"
-                  description: "いいねユーザーID"
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "NG"
 
-  /likes/{id}/:
-    post:
-      tags:
-        - "likes"
-      summary: "いいね更新"
-      security:
-        - Bearer: []
-      operationId: "editLike"
-      parameters: # リクエストパラメータ
-        - name: "id"
-          in: 'path' # パラメータをパス内に含める
-          description: "いいねID"
-          required: true
-          schema:
-            type: "integer"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: "object"
-              required:
-                - "type"
-              properties:
-                type:
-                  type: "integer"
-                  description: "いいね種別"
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "NG"
-
-  /target_likes/:
+  /liked/:
     get:
       tags:
-        - "likes"
+        - "Like"
       summary: "いいねされた人一覧"
       security:
         - Bearer: []
+      operationId: "getLiked"
       parameters: # リクエストパラメータ
         - name: "limit"
           description: "取得件数"
@@ -277,13 +244,77 @@ paths:
         400:
           description: "NG"
 
+  /like/{userId}/:
+    put:
+      tags:
+        - "Like"
+      summary: "いいね"
+      security:
+        - Bearer: []
+      operationId: "addLike"
+      parameters: # リクエストパラメータ
+        - name: "userId"
+          in: 'path' # パラメータをパス内に含める
+          description: "ユーザーID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /like/{likeId}/thanks:
+    post:
+      tags:
+        - "Like"
+      summary: "ありがとう"
+      security:
+        - Bearer: []
+      operationId: "editLikeThanks"
+      parameters: # リクエストパラメータ
+        - name: "likeId"
+          in: 'path' # パラメータをパス内に含める
+          description: "いいねID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /like/{likeId}/skip:
+    post:
+      tags:
+        - "Like"
+      summary: "スキップ"
+      security:
+        - Bearer: []
+      operationId: "editLikeSkip"
+      parameters: # リクエストパラメータ
+        - name: "likeId"
+          in: 'path' # パラメータをパス内に含める
+          description: "いいねID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
   /skips/:
     get:
       tags:
-        - "skips"
+        - "Skip"
       summary: "スキップした人一覧"
       security:
         - Bearer: []
+      operationId: "getSkips"
       parameters: # リクエストパラメータ
         - name: "limit"
           description: "取得件数"
@@ -318,58 +349,15 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
-    put:
-      tags:
-        - "skips"
-      summary: "スキップ登録"
-      security:
-        - Bearer: []
-      operationId: "addSkip"
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: "object"
-              required:
-                - "target_user_id"
-              properties:
-                target_user_id:
-                  type: "integer"
-                  description: "スキップユーザーID"
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "NG"
 
-  /skips/{id}/:
-    post:
-      tags:
-        - "skips"
-      summary: "スキップ更新"
-      security:
-        - Bearer: []
-      operationId: "editSkip"
-      parameters: # リクエストパラメータ
-        - name: "id"
-          in: 'path' # パラメータをパス内に含める
-          description: "スキップID"
-          required: true
-          schema:
-            type: "integer"
-      responses:
-        200:
-          description: "OK"
-        400:
-          description: "NG"
-
-  /target_skips/:
+  /chat_rooms/:
     get:
       tags:
-        - "skips"
-      summary: "スキップされた人一覧"
+        - "ChatRoom"
+      summary: "チャットルーム一覧"
       security:
         - Bearer: []
+      operationId: "getChatRooms"
       parameters: # リクエストパラメータ
         - name: "limit"
           description: "取得件数"
@@ -383,16 +371,16 @@ paths:
             type: "integer"
       responses:
         200:
-          description: "スキップされた人の一覧を返します"
+          description: "チャットルームの一覧を返します"
           content:
             application/json:
               schema:
                 type: "object"
                 properties:
-                  skips:
+                  chat_rooms:
                     type: "array"
                     items:
-                      $ref: '#/components/schemas/SkipGetResponse'
+                      $ref: '#/components/schemas/ChatRoomGetResponse'
                   totalCount:
                     type: "integer"
                     description: "総件数"
@@ -405,13 +393,169 @@ paths:
         400:
           description: "NG"
 
+  /chat_rooms/{roomId}/:
+    post:
+      tags:
+        - "ChatRoom"
+      summary: "チャットルーム更新"
+      security:
+        - Bearer: []
+      operationId: "editChatRooms"
+      parameters: # リクエストパラメータ
+        - name: "roomId"
+          in: "path" # パラメータをパス内に含める
+          description: "チャットルームID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /messages/{userId}/:
+    get:
+      tags:
+        - "Message"
+      summary: "メッセージ一覧"
+      security:
+        - Bearer: []
+      operationId: "getMessages"
+      parameters: # リクエストパラメータ
+        - name: "userId"
+          description: "ユーザーID"
+          in: "path"
+          required: true
+          schema:
+            type: "integer"
+        - name: "limit"
+          description: "取得件数"
+          in: "query"
+          schema:
+            type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "チャットルームの一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  messages:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/MessageGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
+        400:
+          description: "NG"
+    put:
+      tags:
+        - "Message"
+      summary: "メッセージ登録"
+      security:
+        - Bearer: []
+      operationId: "addMessage"
+      parameters: # リクエストパラメータ
+        - name: "userId"
+          in: 'path' # パラメータをパス内に含める
+          description: "ユーザーID"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - "chat_room_id"
+                - "message"
+              properties:
+                chat_room_id:
+                  type: "integer"
+                  description: "チャットルームID"
+                message:
+                  type: "string"
+                  description: "メッセージ"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /messages/{messageId}/:
+    post:
+      tags:
+        - "Message"
+      summary: "メッセージ更新"
+      security:
+        - Bearer: []
+      operationId: "editMessage"
+      parameters: # リクエストパラメータ
+        - name: "messageId"
+          in: 'path' # パラメータをパス内に含める
+          description: "メッセージID"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - "message"
+              properties:
+                message:
+                  type: "string"
+                  description: "メッセージ"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+    delete:
+      tags:
+        - "Message"
+      summary: "メッセージ削除"
+      security:
+        - Bearer: []
+      operationId: "delMessage"
+      parameters: # リクエストパラメータ
+        - name: "messageId"
+          in: 'path' # パラメータをパス内に含める
+          description: "メッセージID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
   /blocks/:
     get:
       tags:
-        - "blocks"
+        - "Block"
       summary: "ブロックした人一覧"
       security:
         - Bearer: []
+      operationId: "getBlocks"
       parameters: # リクエストパラメータ
         - name: "limit"
           description: "取得件数"
@@ -448,7 +592,7 @@ paths:
           description: "NG"
     put:
       tags:
-        - "blocks"
+        - "Block"
       summary: "ブロック登録"
       security:
         - Bearer: []
@@ -474,17 +618,18 @@ paths:
         400:
           description: "NG"
 
-  /blocks/{id}/:
+  /blocks/{blockId}/:
     delete:
       tags:
-        - "blocks"
+        - "Block"
       summary: "ブロック削除"
       security:
         - Bearer: []
+      operationId: "delBlock"
       parameters: # リクエストパラメータ
-        - name: "id"
+        - name: "blockId"
           in: "path" # パラメータをパス内に含める
-          description: "ID"
+          description: "ブロックID"
           required: true
           schema:
             type: "integer"
@@ -494,10 +639,265 @@ paths:
         400:
           description: "NG"
 
-  /searches/:
+  /notifications/:
     get:
       tags:
-        - "searches"
+        - "Notification"
+      summary: "お知らせ一覧"
+      security:
+        - Bearer: []
+      operationId: "getNotifications"
+      parameters: # リクエストパラメータ
+        - name: "limit"
+          description: "取得件数"
+          in: "query"
+          schema:
+            type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "お知らせの一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  notifications:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/NotificationGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
+        400:
+          description: "NG"
+
+  /notifications/{notificationId}:
+    post:
+      tags:
+        - "Notification"
+      summary: "お知らせ既読"
+      security:
+        - Bearer: []
+      operationId: "readNotification"
+      parameters: # リクエストパラメータ
+        - name: "notificationId"
+          in: "path" # パラメータをパス内に含める
+          description: "お知らせID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /login_bonus/:
+    post:
+      tags:
+        - "Bonus"
+      summary: "ログインボーナス"
+      security:
+        - Bearer: []
+      operationId: "addBonus"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /templates/messages/:
+    get:
+      tags:
+        - "Template"
+      summary: "メッセージテンプレ一覧"
+      security:
+        - Bearer: []
+      operationId: "getTemplatesMessages"
+      parameters: # リクエストパラメータ
+        - name: "limit"
+          description: "取得件数"
+          in: "query"
+          schema:
+            type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "メッセージテンプレトの一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  templates:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/TemplateGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
+        400:
+          description: "NG"
+    put:
+      tags:
+        - "Template"
+      summary: "メッセージテンプレ登録"
+      security:
+        - Bearer: []
+      operationId: "addTemplatesMessage"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - "type"
+              properties:
+                type:
+                  type: "integer"
+                  description: "種別"
+                contents:
+                  type: "string"
+                  description: "本文"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /templates/messages/{msgTemplateId}:
+    post:
+      tags:
+        - "Template"
+      summary: "メッセージテンプレ更新"
+      security:
+        - Bearer: []
+      operationId: "editTemplatesMessage"
+      parameters: # リクエストパラメータ
+        - name: "msgTemplateId"
+          in: 'path' # パラメータをパス内に含める
+          description: "メッセージテンプレトID"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - "type"
+              properties:
+                type:
+                  type: "integer"
+                  description: "種別"
+                contents:
+                  type: "string"
+                  description: "本文"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+    delete:
+      tags:
+        - "Template"
+      summary: "メッセージテンプレ削除"
+      security:
+        - Bearer: []
+      operationId: "delTemplatesMessage"
+      parameters: # リクエストパラメータ
+        - name: "msgTemplateId"
+          in: 'path' # パラメータをパス内に含める
+          description: "メッセージテンプレトID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /settings/notifications/:
+    get:
+      tags:
+        - "SettingNotification"
+      summary: "通知設定の取得"
+      operationId: "getSettingNotification"
+      security:
+        - Bearer: []
+      responses:
+        200:
+          description: "通知設定を返します"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserNotificationSettings'
+        400:
+          description: "NG"
+    post:
+      tags:
+        - "SettingNotification"
+      summary: "通知設定の更新"
+      security:
+        - Bearer: []
+      operationId: "editSettingNotification"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                notification_type:
+                  type: "integer"
+                  description: "通知タイプ"
+                recieved_likes:
+                  type: "boolean"
+                  description: "いいね！をもらった時"
+                matching:
+                  type: "boolean"
+                  description: "マッチングした時"
+                recieved_message:
+                  type: "boolean"
+                  description: "メッセージをもらった時"
+                footprint:
+                  type: "boolean"
+                  description: "足あとがついた時"
+                others:
+                  type: "boolean"
+                  description: "その他のお知らせ"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /settings/searches/:
+    get:
+      tags:
+        - "Searche"
       summary: "検索条件の取得"
       security:
         - Bearer: []
@@ -512,7 +912,7 @@ paths:
           description: "NG"
     put:
       tags:
-        - "searches"
+        - "Searche"
       summary: "検索条件登録"
       security:
         - Bearer: []
@@ -521,17 +921,17 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/SearchPutRequest'
+              $ref: '#/components/schemas/SearchPutAndPostRequest'
       responses:
         200:
           description: "OK"
         400:
           description: "NG"
 
-  /searches/{id}/:
+  /settings/searches/{id}/:
     post:
       tags:
-        - "searches"
+        - "Searche"
       summary: "検索条件更新"
       operationId: "editSearche"
       parameters: # リクエストパラメータ
@@ -545,7 +945,123 @@ paths:
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/UserSearchConditions"
+              $ref: "#/components/schemas/SearchPutAndPostRequest"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /inquiry/:
+    put:
+      tags:
+        - "Inquiry"
+      summary: "問い合わせ登録"
+      security:
+        - Bearer: []
+      operationId: "addInquiry"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                type:
+                  type: "integer"
+                  description: "問い合わせ種別"
+                contents:
+                  type: "string"
+                  description: "問い合わせ内容"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /users/recommends/:
+    get:
+      tags:
+        - "UserRecommend"
+      summary: "おすすめユーザー一覧"
+      security:
+        - Bearer: []
+      operationId: "getUsersRecommends"
+      parameters: # リクエストパラメータ
+        - name: "order_by"
+          description: "並び順"
+          in: "query"
+          schema:
+            type: "string"
+        - name: "limit"
+          description: "取得件数"
+          in: "query"
+          schema:
+            type: "integer"
+        - name: "offset"
+          description: "開始位置"
+          in: "query"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "おすすめユーザーの一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "object"
+                properties:
+                  users:
+                    type: "array"
+                    items:
+                      $ref: '#/components/schemas/UserGetResponse'
+                  totalCount:
+                    type: "integer"
+                    description: "総件数"
+                  offset:
+                    type: "integer"
+                    description: "開始位置"
+                  limit:
+                    type: "integer"
+                    description: "取得件数"
+        400:
+          description: "NG"
+
+  /users/recommends/@userId/like:
+    post:
+      tags:
+        - "UserRecommend"
+      summary: "おすすめユーザーへのいいね"
+      security:
+        - Bearer: []
+      operationId: "editUsersRecommendsLike"
+      parameters: # リクエストパラメータ
+        - name: "userId"
+          in: 'path' # パラメータをパス内に含める
+          description: "ユーザーID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /users/recommends/@userId/skip:
+    post:
+      tags:
+        - "UserRecommend"
+      summary: "おすすめユーザーへのスキップ"
+      security:
+        - Bearer: []
+      operationId: "editUsersRecommendsSkip"
+      parameters: # リクエストパラメータ
+        - name: "userId"
+          in: 'path' # パラメータをパス内に含める
+          description: "ユーザーID"
+          required: true
+          schema:
+            type: "integer"
       responses:
         200:
           description: "OK"
@@ -563,9 +1079,15 @@ components:
       description: "ユーザー検索条件情報"
       type: "object"
       properties:
+        id:
+          type: "integer"
+          description: "ID"
         user_id:
           type: "integer"
           description: "ユーザーID"
+        order_no:
+          type: "integer"
+          description: "表示順"
         age_min:
           type: "integer"
           description: "年齢（MIN）"
@@ -921,6 +1443,43 @@ components:
         name:
           type: "string"
           description: "名称"
+
+    UserTemplateTypes:
+      description: "ユーザーテンプレート種別マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "名称"
+
+    UserNotificationSettings:
+      description: "ユーザー通知設定情報"
+      type: "object"
+      properties:
+        user_id:
+          type: "integer"
+          description: "ユーザーID"
+        notification_type:
+          type: "integer"
+          description: "通知タイプ"
+        recieved_likes:
+          type: "boolean"
+          description: "いいね！をもらった時"
+        matching:
+          type: "boolean"
+          description: "マッチングした時"
+        recieved_message:
+          type: "boolean"
+          description: "メッセージをもらった時"
+        footprint:
+          type: "boolean"
+          description: "足あとがついた時"
+        others:
+          type: "boolean"
+          description: "その他のお知らせ"
 
     UserGetResponse:
       description: "ユーザ一覧"
@@ -1495,10 +2054,13 @@ components:
           id: 1
           name: "ブロック名称"
 
-    SearchPutRequest:
+    SearchPutAndPostRequest:
       description: "ユーザー検索条件情報"
       type: "object"
       properties:
+        order_no:
+          type: "integer"
+          description: "表示順"
         age_min:
           type: "integer"
           description: "年齢（MIN）"
@@ -1576,3 +2138,124 @@ components:
           items:
             type: "integer"
           description: "休日"
+
+    ChatRoomGetResponse:
+      description: "チャットルーム一覧"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "チャットルームID"
+        user_id:
+          type: "integer"
+          description: "ユーザーID"
+        image: # 画像
+          type: "array"
+          items:
+            $ref: '#/components/schemas/UserImages'
+        nickname:
+          type: "string"
+          nullable: true
+          description: "ニックネーム"
+        birthday:
+          type: "string"
+          format: "date"
+          nullable: true
+          description: "生年月日"
+        age:
+          type: "integer"
+          description: "年齢"
+        prefecture: # 居住地
+          $ref: '#/components/schemas/Prefectures'
+        height:
+          type: "integer"
+          description: "身長"
+        job: # 職業
+          $ref: '#/components/schemas/JobOptions'
+
+      example:
+        id: 1
+        user_id: 1
+        image:
+          - id: 1
+            storage_path: "http://imagePath1"
+            download_url: "http://imagePath1"
+        nickname: "ニックネーム"
+        birthday: "2014-10-10"
+        age: 20
+        prefecture:
+          id: 1 # ex)1:東京
+          name: "東京"
+        height: 170
+        job:
+          id: 1 # ex)1:会社員
+          name: "会社員"
+
+    MessageGetResponse:
+      description: "メッセージ一覧"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "メッセージID"
+        chat_room_id:
+          type: "integer"
+          description: "チャットルームID"
+        user_id:
+          type: "integer"
+          description: "ユーザーID"
+        message:
+          type: "string"
+          description: "メッセージ"
+        created_at:
+          type: "string"
+          format: "date-time"
+          description: "作成日時"
+        updated_at:
+          type: "string"
+          format: "date-time"
+          description: "更新日時"
+      example:
+        id: 1
+        chat_room_id: 1
+        user_id: 1
+        message: "メッセージ"
+        created_at: "2014-10-10T13:50:40+09:00"
+        updated_at: "2014-10-10T13:50:40+09:00"
+
+    NotificationGetResponse:
+      description: "お知らせ一覧"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "お知らせID"
+        title:
+          type: "string"
+          description: "タイトル"
+        text:
+          type: "string"
+          description: "本文"
+      example:
+        id: 1
+        title: "タイトル"
+        text: "本文"
+
+    TemplateGetResponse:
+      description: "メッセージテンプレート一覧"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ユーザーテンプレートID"
+        type:
+          $ref: '#/components/schemas/UserTemplateTypes'
+        contents:
+          type: "string"
+          description: "本文"
+      example:
+        id: 1
+        type:
+          id: 1
+          name: "種別名"
+        contents: "本文"
