@@ -10,23 +10,20 @@ services:
     tty: true
   swagger-ui:
     container_name: swagger-ui
-    image: swaggerapi/swagger-ui
+    build:
+      context: .
+      dockerfile: dockerfiles/swagger-ui/Dockerfile
     ports:
       - 9001:8080
-    volumes:
-      - ./documents/openapi.yaml:/openapi.yaml
-    environment:
-      SWAGGER_JSON: /openapi.yaml
     restart: always
     tty: true
   swagger-mock:
     container_name: swagger-mock
-    image: danielgtaylor/apisprout:latest
+    build:
+      context: .
+      dockerfile: dockerfiles/swagger-mock/Dockerfile
     ports:
       - 9002:8000
-    volumes:
-      - ./documents/openapi.yaml:/openapi.yaml
-    entrypoint: /usr/local/bin/apisprout /openapi.yaml --watch
     restart: always
     tty: true
   db:
