@@ -37,6 +37,16 @@ tags:
     description: "問い合わせ"
   - name: "UserRecommend"
     description: "おすすめユーザー"
+  - name: "Identifications"
+    description: "身分証"
+  - name: "Image"
+    description: "画像"
+  - name: "Subscriptions"
+    description: "定期購読商品"
+  - name: "Products"
+    description: "買い切り商品"
+  - name: "ExchangeItem"
+    description: "交換用商品"
 paths:
   /user:
     get:
@@ -1068,6 +1078,245 @@ paths:
         400:
           description: "NG"
 
+  /upload/identifications/:
+    put:
+      tags:
+        - "Identifications"
+      summary: "身分証登録"
+      security:
+        - Bearer: []
+      operationId: "addIdentifications"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                storage_path:
+                  type: "string"
+                  description: "ストレージパス"
+                download_url:
+                  type: "string"
+                  description: "画像URL"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /upload/images/:
+    put:
+      tags:
+        - "Image"
+      summary: "プロフ画像の登録"
+      security:
+        - Bearer: []
+      operationId: "addImage"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                storage_path:
+                  type: "string"
+                  description: "ストレージパス"
+                download_url:
+                  type: "string"
+                  description: "画像URL"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /upload/images/{imageId}/:
+    post:
+      tags:
+        - "Image"
+      summary: "プロフ画像の更新"
+      security:
+        - Bearer: []
+      operationId: "editImage"
+      parameters: # リクエストパラメータ
+        - name: "imageId"
+          in: 'path' # パラメータをパス内に含める
+          description: "ユーザー画像ID"
+          required: true
+          schema:
+            type: "integer"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              properties:
+                storage_path:
+                  type: "string"
+                  description: "ストレージパス"
+                download_url:
+                  type: "string"
+                  description: "画像URL"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+    delete:
+      tags:
+        - "Image"
+      summary: "プロフ画像の削除"
+      security:
+        - Bearer: []
+      operationId: "delImage"
+      parameters: # リクエストパラメータ
+        - name: "imageId"
+          in: 'path' # パラメータをパス内に含める
+          description: "ユーザー画像ID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
+  /shop/{type}/subscriptions/:
+    get:
+      tags:
+        - "Subscriptions"
+      summary: "定期購読商品の取得"
+      security:
+        - Bearer: []
+      operationId: "getSubscriptions"
+      parameters: # リクエストパラメータ
+        - name: "type"
+          in: 'path' # パラメータをパス内に含める
+          description: "ios, androidを指定"
+          required: true
+          schema:
+            type: "string"
+        - name: "subscriptionId"
+          in: 'query'
+          description: "定期購読商品ID"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "定期購読商品の一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    id:
+                      type: "integer"
+                      description: "ID"
+                    name:
+                      type: "string"
+                      description: "定期購読商品名"
+        400:
+          description: "NG"
+
+  /shop/{type}/products/:
+    get:
+      tags:
+        - "Products"
+      summary: "買い切り商品を取得"
+      security:
+        - Bearer: []
+      operationId: "getProducts"
+      parameters: # リクエストパラメータ
+        - name: "type"
+          in: 'path' # パラメータをパス内に含める
+          description: "ios, androidを指定"
+          required: true
+          schema:
+            type: "string"
+        - name: "productId"
+          in: 'query' # パラメータをパス内に含める
+          description: "買い切り商品ID"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "買い切り商品の一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    id:
+                      type: "integer"
+                      description: "ID"
+                    name:
+                      type: "string"
+                      description: "買い切り商品名"
+        400:
+          description: "NG"
+
+  /shop/{type}/exchange/:
+    get:
+      tags:
+        - "ExchangeItem"
+      summary: "ポイント交換用商品を取得"
+      security:
+        - Bearer: []
+      operationId: "getEexchange"
+      parameters: # リクエストパラメータ
+        - name: "type"
+          in: 'path' # パラメータをパス内に含める
+          description: "ios, androidを指定"
+          required: true
+          schema:
+            type: "string"
+        - name: "itemId"
+          in: 'query'
+          description: "ポイント交換用商品ID"
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "ポイント交換用商品の一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  $ref: '#/components/schemas/ExchangeItems'
+        400:
+          description: "NG"
+    post:
+      tags:
+        - "ExchangeItem"
+      summary: "商品交換"
+      security:
+        - Bearer: []
+      operationId: "editEexchange"
+      parameters: # リクエストパラメータ
+        - name: "type"
+          in: 'path' # パラメータをパス内に含める
+          description: "ios, androidを指定"
+          required: true
+          schema:
+            type: "string"
+        - name: "itemId"
+          in: 'query'
+          description: "ポイント交換用商品ID"
+          required: true
+          schema:
+            type: "integer"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
 components:
   securitySchemes:
     Bearer:
@@ -1481,6 +1730,23 @@ components:
           type: "boolean"
           description: "その他のお知らせ"
 
+    ExchangeItems:
+      description: "ポイント交換用商品"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "交換用商品名"
+        consumption_point:
+          type: "integer"
+          description: "消費ポイント"
+        order_no:
+          type: "integer"
+          description: "表示順"
+
     UserGetResponse:
       description: "ユーザ一覧"
       type: "object"
@@ -1701,17 +1967,6 @@ components:
         introduction_text:
           type: "string"
           description: "自己紹介"
-        image: # 画像
-          type: "array"
-          items:
-            type: "object"
-            properties:
-              storage_path:
-                type: "string"
-                description: "ストレージパス"
-              download_url:
-                type: "string"
-                description: "画像URL"
         age_approval_status:
           type: "integer"
           description: "年齢確認ステータス"
@@ -1811,10 +2066,6 @@ components:
         introduction_text:
           type: "string"
           description: "自己紹介"
-        image: # 画像
-          type: "array"
-          items:
-            $ref: '#/components/schemas/UserImages'
         age_approval_status:
           type: "integer"
           description: "年齢確認ステータス"
