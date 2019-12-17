@@ -47,6 +47,8 @@ tags:
     description: "買い切り商品"
   - name: "ExchangeItem"
     description: "交換用商品"
+  - name: "Point"
+    description: "ポイント"
 paths:
   /user:
     get:
@@ -620,7 +622,7 @@ paths:
                   type: "integer"
                   description: "ブロック理由"
                 blocked_user_id:
-                  type: "integer"
+                  type: "string"
                   description: "ブロックされたユーザーID"
       responses:
         200:
@@ -1317,6 +1319,68 @@ paths:
         400:
           description: "NG"
 
+  /point/history/:
+    get:
+      tags:
+        - "Point"
+      summary: "ポイント履歴の取得"
+      security:
+        - Bearer: []
+      operationId: "getPoint"
+      responses:
+        200:
+          description: "ポイント交換用商品の一覧を返します"
+          content:
+            application/json:
+              schema:
+                type: "array"
+                items:
+                  type: "object"
+                  properties:
+                    grant_at:
+                      type: "string"
+                      format: "date-time"
+                      description: "付与日付"
+                    item_id:
+                      type: "integer"
+                      description: "項目ID"
+                    item_name:
+                      type: "string"
+                      description: "項目名"
+                    point:
+                      type: "integer"
+                      description: "ポイント"
+        400:
+          description: "NG"
+
+  /point/add/:
+    post:
+      tags:
+        - "Point"
+      summary: "ポイント追加"
+      security:
+        - Bearer: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: "object"
+              required:
+                - "point"
+              properties:
+                itemId:
+                  type: "integer"
+                  description: "項目ID"
+                grant_at:
+                  type: "string"
+                  format: "date-time"
+                  description: "日付"
+      responses:
+        200:
+          description: "OK"
+        400:
+          description: "NG"
+
 components:
   securitySchemes:
     Bearer:
@@ -1332,7 +1396,7 @@ components:
           type: "integer"
           description: "ID"
         user_id:
-          type: "integer"
+          type: "string"
           description: "ユーザーID"
         order_no:
           type: "integer"
@@ -1709,7 +1773,7 @@ components:
       type: "object"
       properties:
         user_id:
-          type: "integer"
+          type: "string"
           description: "ユーザーID"
         notification_type:
           type: "integer"
@@ -1752,7 +1816,7 @@ components:
       type: "object"
       properties:
         id:
-          type: "integer"
+          type: "string"
           description: "ユーザーID"
         nickname:
           type: "string"
@@ -2042,7 +2106,7 @@ components:
         - "id"
       properties:
         id:
-          type: "integer"
+          type: "string"
           description: "ユーザーID"
         nickname:
           type: "string"
@@ -2142,7 +2206,7 @@ components:
           type: "integer"
           description: "ID"
         user_id:
-          type: "integer"
+          type: "string"
           description: "ユーザーID"
         image: # 画像
           type: "array"
@@ -2202,7 +2266,7 @@ components:
           type: "integer"
           description: "ID"
         user_id:
-          type: "integer"
+          type: "string"
           description: "ユーザーID"
         image: # 画像
           type: "array"
@@ -2257,7 +2321,7 @@ components:
           type: "integer"
           description: "ID"
         user_id:
-          type: "integer"
+          type: "string"
           description: "ユーザーID"
         image: # 画像
           type: "array"
@@ -2398,7 +2462,7 @@ components:
           type: "integer"
           description: "チャットルームID"
         user_id:
-          type: "integer"
+          type: "string"
           description: "ユーザーID"
         image: # 画像
           type: "array"
@@ -2453,7 +2517,7 @@ components:
           type: "integer"
           description: "チャットルームID"
         user_id:
-          type: "integer"
+          type: "string"
           description: "ユーザーID"
         message:
           type: "string"
