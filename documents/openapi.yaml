@@ -1,6 +1,6 @@
 openapi: "3.0.0"
 info:
-  title: "HogeHoge"
+  title: "スマート婚活アプリ"
   version: "1.0.0"
 servers:
   - url: "http://localhost:9002"
@@ -67,6 +67,10 @@ paths:
                 $ref: '#/components/schemas/UserGetResponse'
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       tags:
         - "User"
@@ -84,6 +88,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - "User"
@@ -101,6 +109,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - "User"
@@ -113,6 +125,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users:
     get:
@@ -169,6 +185,10 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /likes/:
     get:
@@ -212,6 +232,10 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /liked/:
     get:
@@ -255,6 +279,10 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /like/{userId}/:
     put:
@@ -276,6 +304,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /like/{likeId}/thanks:
     post:
@@ -297,6 +329,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /like/{likeId}/skip:
     post:
@@ -318,6 +354,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /skips/:
     get:
@@ -361,6 +401,10 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /chat_rooms/:
     get:
@@ -404,6 +448,10 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /chat_rooms/{roomId}/:
     post:
@@ -425,6 +473,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /messages/{userId}/:
     get:
@@ -474,6 +526,10 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       tags:
         - "Message"
@@ -508,6 +564,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /messages/{messageId}/:
     post:
@@ -540,6 +600,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - "Message"
@@ -559,6 +623,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /blocks/:
     get:
@@ -602,6 +670,10 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       tags:
         - "Block"
@@ -629,6 +701,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /blocks/{blockId}/:
     delete:
@@ -650,6 +726,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /notifications/:
     get:
@@ -693,6 +773,10 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /notifications/{notificationId}:
     post:
@@ -714,6 +798,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /login_bonus/:
     post:
@@ -728,6 +816,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /templates/messages/:
     get:
@@ -771,6 +863,10 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       tags:
         - "Template"
@@ -797,6 +893,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /templates/messages/{msgTemplateId}:
     post:
@@ -832,6 +932,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - "Template"
@@ -851,6 +955,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /settings/notifications/:
     get:
@@ -869,6 +977,10 @@ paths:
                 $ref: '#/components/schemas/UserNotificationSettings'
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - "SettingNotification"
@@ -905,6 +1017,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /settings/searches/:
     get:
@@ -922,6 +1038,10 @@ paths:
                 $ref: '#/components/schemas/UserSearchConditions'
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       tags:
         - "Searche"
@@ -939,6 +1059,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /settings/searches/{id}/:
     post:
@@ -963,6 +1087,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /inquiry/:
     put:
@@ -989,6 +1117,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users/recommends/:
     get:
@@ -1037,6 +1169,10 @@ paths:
                     description: "取得件数"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users/recommends/@userId/like:
     post:
@@ -1058,6 +1194,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users/recommends/@userId/skip:
     post:
@@ -1079,6 +1219,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /upload/identifications/:
     put:
@@ -1105,6 +1249,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /upload/images/:
     put:
@@ -1131,6 +1279,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /upload/images/{imageId}/:
     post:
@@ -1164,6 +1316,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - "Image"
@@ -1183,6 +1339,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /shop/{type}/subscriptions/:
     get:
@@ -1222,6 +1382,10 @@ paths:
                       description: "定期購読商品名"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /shop/{type}/products/:
     get:
@@ -1261,6 +1425,10 @@ paths:
                       description: "買い切り商品名"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /shop/{type}/exchange/:
     get:
@@ -1293,6 +1461,10 @@ paths:
                   $ref: '#/components/schemas/ExchangeItems'
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - "ExchangeItem"
@@ -1318,6 +1490,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /point/history/:
     get:
@@ -1380,6 +1556,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   securitySchemes:
@@ -1811,6 +1991,17 @@ components:
           type: "integer"
           description: "表示順"
 
+    HobbyOptions:
+      description: "好きなこと・趣味マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "名称"
+
     UserGetResponse:
       description: "ユーザ一覧"
       type: "object"
@@ -1889,6 +2080,10 @@ components:
           type: "array"
           items:
             $ref: '#/components/schemas/PersonalityOptions'
+        hobbies: # 好きなこと・趣味マスタ
+          type: "array"
+          items:
+            $ref: '#/components/schemas/HobbyOptions'
         income: # 年収
           $ref: '#/components/schemas/IncomeOptions'
         holiday: # 休日
@@ -1902,7 +2097,7 @@ components:
         dating_fee: # 最初のデート料金
           $ref: '#/components/schemas/DatingFeeOptions'
       example:
-        id: 1
+        id: "1"
         nickname: "ニックネーム"
         birthday: "2014-10-10"
         age: 20
@@ -1984,6 +2179,9 @@ components:
         personality:
           - id: 1 # ex)1:優しい
             name: "優しい"
+        hobbies:
+          - id: 1 # ex)1:映画
+            name: "映画"
         income:
           id: 1 # ex)1:300万円未満
           name: "300万円未満"
@@ -2081,6 +2279,11 @@ components:
           items:
             type: "integer"
           description: "性格・タイプ"
+        hobbies:
+          type: "array"
+          items:
+            type: "integer"
+          description: "好きなこと・趣味"
         income_id:
           type: "integer"
           description: "年収"
@@ -2180,6 +2383,11 @@ components:
           items:
             type: "integer"
           description: "性格・タイプ"
+        hobbies:
+          type: "array"
+          items:
+            type: "integer"
+          description: "好きなこと・趣味"
         income_id:
           type: "integer"
           description: "年収"
@@ -2574,3 +2782,40 @@ components:
           id: 1
           name: "種別名"
         contents: "本文"
+
+    Error:
+      description: "エラー"
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          description: ""
+        message:
+          type: "string"
+          description: ""
+        errors:
+          type: "array"
+          description: ""
+          items:
+            $ref: '#/components/schemas/ErrorList'
+      example:
+        code: 1
+        message: "Validation Failed"
+        errors:
+          - resource: "Issue"
+            field: "title"
+            code: "missing_field"
+
+    ErrorList:
+      description: "エラーリスト"
+      type: "object"
+      properties:
+        resource:
+          type: "string"
+          description: ""
+        field:
+          type: "string"
+          description: ""
+        code:
+          type: "string"
+          description: ""
