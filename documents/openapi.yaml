@@ -1,6 +1,6 @@
 openapi: "3.0.0"
 info:
-  title: "HogeHoge"
+  title: "スマート婚活アプリ"
   version: "1.0.0"
 servers:
   - url: "http://localhost:9002"
@@ -67,6 +67,10 @@ paths:
                 $ref: '#/components/schemas/UserGetResponse'
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       tags:
         - "User"
@@ -84,6 +88,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - "User"
@@ -101,6 +109,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - "User"
@@ -113,6 +125,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users:
     get:
@@ -167,8 +183,219 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+                example:
+                  users:
+                    - id: "1"
+                      nickname: "ニックネーム1"
+                      birthday: "2014-10-10"
+                      age: 20
+                      prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      gender:
+                        id: 1 # 男性:1、女性:2
+                        name: "男性"
+                      height: 170
+                      job:
+                        id: 1 # ex)1:会社員
+                        name: "会社員"
+                      introduction_text: "自己紹介"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath1"
+                          download_url: "http://imagePath1"
+                        - id: 2
+                          storage_path: "http://imagePath2"
+                          download_url: "http://imagePath2"
+                        - id: 3
+                          storage_path: "http://imagePath3"
+                          download_url: "http://imagePath3"
+                        - id: 4
+                          storage_path: "http://imagePath4"
+                          download_url: "http://imagePath4"
+                        - id: 5
+                          storage_path: "http://imagePath5"
+                          download_url: "http://imagePath5"
+                        - id: 6
+                          storage_path: "http://imagePath6"
+                          download_url: "http://imagePath6"
+                      numOfLikes: 100
+                      numOfPoints: 100
+                      age_approval_status:
+                        id: 1 # 1:未審査,2:審査済,3:却下
+                        name: "未審査"
+                      figure:
+                        id: 1 # ex)1:スリム
+                        name: "スリム"
+                      birth_of_prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      education:
+                        id: 1 # ex)1:高卒
+                        name: "高卒"
+                      language:
+                        id: 1 # ex)1:日本語
+                        name: "日本語"
+                      sibling:
+                        id: 1 # ex)ユーザが男性の場合 1:長男,ユーザが女性の場合 1:長女
+                        name: "長男"
+                      sociability:
+                        - id: 1 # ex)1:大人数が好き
+                          name: "大人数が好き"
+                      housemate:
+                        id: 1 # ex)1:一人暮らし
+                        name: "一人暮らし"
+                      future_move:
+                        id: 1 # ex)1:可能
+                        name: "可能"
+                      blood_type:
+                        id: 1 # ex)1:A型
+                        name: "A型"
+                      marriageHistory:
+                        id: 1 # ex)1:未婚
+                        name: "未婚"
+                      has_child:
+                        id: 1 # ex)1:なし
+                        name: "なし"
+                      smoking:
+                        id: 1 # ex)1:吸う
+                        name: "吸う"
+                      drink:
+                        id: 1 # ex)1:飲まない
+                        name: "飲まない"
+                      personality:
+                        - id: 1 # ex)1:優しい
+                          name: "優しい"
+                      hobbies:
+                        - id: 1 # ex)1:映画
+                          name: "映画"
+                      income:
+                        id: 1 # ex)1:300万円未満
+                        name: "300万円未満"
+                      holiday:
+                        - id: 1 # ex)1:月曜
+                          name: "月曜"
+                        - id: 2
+                          name: "火曜"
+                      process_to_meet:
+                        id: 1 # ex)1:マッチングしたらできるだけ早くまずお会いしてみたい
+                        name: "マッチングしたらできるだけ早くまずお会いしてみたい"
+                      important:
+                        id: 1 # ex)1:年齢・写真の印象
+                        name: "年齢・写真の印象"
+                      dating_fee:
+                        id: 1 # ex)1:初回デート費用
+                        name: "初回デート費用"
+                    - id: "2"
+                      nickname: "ニックネーム2"
+                      birthday: "2014-10-10"
+                      age: 20
+                      prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      gender:
+                        id: 1 # 男性:1、女性:2
+                        name: "男性"
+                      height: 170
+                      job:
+                        id: 1 # ex)1:会社員
+                        name: "会社員"
+                      introduction_text: "自己紹介"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath1"
+                          download_url: "http://imagePath1"
+                        - id: 2
+                          storage_path: "http://imagePath2"
+                          download_url: "http://imagePath2"
+                        - id: 3
+                          storage_path: "http://imagePath3"
+                          download_url: "http://imagePath3"
+                        - id: 4
+                          storage_path: "http://imagePath4"
+                          download_url: "http://imagePath4"
+                        - id: 5
+                          storage_path: "http://imagePath5"
+                          download_url: "http://imagePath5"
+                        - id: 6
+                          storage_path: "http://imagePath6"
+                          download_url: "http://imagePath6"
+                      numOfLikes: 100
+                      numOfPoints: 100
+                      age_approval_status:
+                        id: 1 # 1:未審査,2:審査済,3:却下
+                        name: "未審査"
+                      figure:
+                        id: 1 # ex)1:スリム
+                        name: "スリム"
+                      birth_of_prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      education:
+                        id: 1 # ex)1:高卒
+                        name: "高卒"
+                      language:
+                        id: 1 # ex)1:日本語
+                        name: "日本語"
+                      sibling:
+                        id: 1 # ex)ユーザが男性の場合 1:長男,ユーザが女性の場合 1:長女
+                        name: "長男"
+                      sociability:
+                        - id: 1 # ex)1:大人数が好き
+                          name: "大人数が好き"
+                      housemate:
+                        id: 1 # ex)1:一人暮らし
+                        name: "一人暮らし"
+                      future_move:
+                        id: 1 # ex)1:可能
+                        name: "可能"
+                      blood_type:
+                        id: 1 # ex)1:A型
+                        name: "A型"
+                      marriageHistory:
+                        id: 1 # ex)1:未婚
+                        name: "未婚"
+                      has_child:
+                        id: 1 # ex)1:なし
+                        name: "なし"
+                      smoking:
+                        id: 1 # ex)1:吸う
+                        name: "吸う"
+                      drink:
+                        id: 1 # ex)1:飲まない
+                        name: "飲まない"
+                      personality:
+                        - id: 1 # ex)1:優しい
+                          name: "優しい"
+                      hobbies:
+                        - id: 1 # ex)1:映画
+                          name: "映画"
+                      income:
+                        id: 1 # ex)1:300万円未満
+                        name: "300万円未満"
+                      holiday:
+                        - id: 1 # ex)1:月曜
+                          name: "月曜"
+                        - id: 2
+                          name: "火曜"
+                      process_to_meet:
+                        id: 1 # ex)1:マッチングしたらできるだけ早くまずお会いしてみたい
+                        name: "マッチングしたらできるだけ早くまずお会いしてみたい"
+                      important:
+                        id: 1 # ex)1:年齢・写真の印象
+                        name: "年齢・写真の印象"
+                      dating_fee:
+                        id: 1 # ex)1:初回デート費用
+                        name: "初回デート費用"
+                  totalCount: 2
+                  offset: 0
+                  limit: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /likes/:
     get:
@@ -210,8 +437,57 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+                example:
+                  likes:
+                    - id: 1
+                      user_id: "1"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath1"
+                          download_url: "http://imagePath1"
+                          nickname: "ニックネーム1"
+                          birthday: "2014-10-10"
+                          age: 20
+                          prefecture:
+                            id: 1 # ex)1:東京
+                            name: "東京"
+                          height: 170
+                          job:
+                            id: 1 # ex)1:会社員
+                            name: "会社員"
+                          type:
+                            id: 1
+                            name: "通常"
+                          liked_at: "2014-10-10T13:50:40+09:00"
+                    - id: 2
+                      user_id: "2"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath2"
+                          download_url: "http://imagePath2"
+                          nickname: "ニックネーム2"
+                          birthday: "2014-10-10"
+                          age: 20
+                          prefecture:
+                            id: 1 # ex)1:東京
+                            name: "東京"
+                          height: 170
+                          job:
+                            id: 1 # ex)1:会社員
+                            name: "会社員"
+                          type:
+                            id: 1
+                            name: "通常"
+                          liked_at: "2014-10-10T13:50:40+09:00"
+                  totalCount: 2
+                  offset: 0
+                  limit: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /liked/:
     get:
@@ -253,8 +529,57 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+                example:
+                  likes:
+                    - id: 1
+                      user_id: "1"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath1"
+                          download_url: "http://imagePath1"
+                          nickname: "ニックネーム1"
+                          birthday: "2014-10-10"
+                          age: 20
+                          prefecture:
+                            id: 1 # ex)1:東京
+                            name: "東京"
+                          height: 170
+                          job:
+                            id: 1 # ex)1:会社員
+                            name: "会社員"
+                          type:
+                            id: 1
+                            name: "通常"
+                          liked_at: "2014-10-10T13:50:40+09:00"
+                    - id: 2
+                      user_id: "2"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath2"
+                          download_url: "http://imagePath2"
+                          nickname: "ニックネーム2"
+                          birthday: "2014-10-10"
+                          age: 20
+                          prefecture:
+                            id: 1 # ex)1:東京
+                            name: "東京"
+                          height: 170
+                          job:
+                            id: 1 # ex)1:会社員
+                            name: "会社員"
+                          type:
+                            id: 1
+                            name: "通常"
+                          liked_at: "2014-10-10T13:50:40+09:00"
+                  totalCount: 2
+                  offset: 0
+                  limit: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /like/{userId}/:
     put:
@@ -276,6 +601,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /like/{likeId}/thanks:
     post:
@@ -297,6 +626,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /like/{likeId}/skip:
     post:
@@ -318,6 +651,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /skips/:
     get:
@@ -359,8 +696,51 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+                example:
+                  skips:
+                    - id: 1
+                      user_id: "1"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath1"
+                          download_url: "http://imagePath1"
+                      nickname: "ニックネーム1"
+                      birthday: "2014-10-10"
+                      age: 20
+                      prefecture:
+                        id: 1
+                        name: "東京"
+                      height: 170
+                      job:
+                        id: 1
+                        name: "会社員"
+                      skipped_at: "2014-10-10T13:50:40+09:00"
+                    - id: 2
+                      user_id: "2"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath2"
+                          download_url: "http://imagePath2"
+                      nickname: "ニックネーム2"
+                      birthday: "2014-10-10"
+                      age: 20
+                      prefecture:
+                        id: 1
+                        name: "東京"
+                      height: 170
+                      job:
+                        id: 1
+                        name: "会社員"
+                      skipped_at: "2014-10-10T13:50:40+09:00"
+                  totalCount: 2
+                  offset: 0
+                  limit: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /chat_rooms/:
     get:
@@ -402,8 +782,49 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+                example:
+                  chat_rooms:
+                    - id: 1
+                      user_id: "1"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath1"
+                          download_url: "http://imagePath1"
+                      nickname: "ニックネーム2"
+                      birthday: "2014-10-10"
+                      age: 20
+                      prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      height: 170
+                      job:
+                        id: 1 # ex)1:会社員
+                        name: "会社員"
+                    - id: 2
+                      user_id: "2"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath2"
+                          download_url: "http://imagePath2"
+                      nickname: "ニックネーム2"
+                      birthday: "2014-10-10"
+                      age: 20
+                      prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      height: 170
+                      job:
+                        id: 1 # ex)1:会社員
+                        name: "会社員"
+                  totalCount: 2
+                  offset: 0
+                  limit: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /chat_rooms/{roomId}/:
     post:
@@ -425,6 +846,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /messages/{userId}/:
     get:
@@ -472,8 +897,29 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+                example:
+                  messages:
+                    - id: 1
+                      chat_room_id: 1
+                      user_id: "1"
+                      message: "メッセージ1"
+                      created_at: "2014-10-10T13:50:40+09:00"
+                      updated_at: "2014-10-10T13:50:40+09:00"
+                    - id: 2
+                      chat_room_id: 2
+                      user_id: "2"
+                      message: "メッセージ2"
+                      created_at: "2014-10-10T13:50:40+09:00"
+                      updated_at: "2014-10-10T13:50:40+09:00"
+                  totalCount: 2
+                  offset: 0
+                  limit: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       tags:
         - "Message"
@@ -508,6 +954,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /messages/{messageId}/:
     post:
@@ -540,6 +990,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - "Message"
@@ -559,6 +1013,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /blocks/:
     get:
@@ -600,8 +1058,55 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+                example:
+                  blocks:
+                    - id: 1
+                      user_id: "1"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath1"
+                          download_url: "http://imagePath1"
+                      nickname: "ニックネーム1"
+                      birthday: "2014-10-10"
+                      age: 20
+                      prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      height: 170
+                      job:
+                        id: 1 # ex)1:会社員
+                        name: "会社員"
+                      reason:
+                        id: 1
+                        name: "ブロック名称"
+                    - id: 2
+                      user_id: "2"
+                      image:
+                        - id: 2
+                          storage_path: "http://imagePath2"
+                          download_url: "http://imagePath2"
+                      nickname: "ニックネーム2"
+                      birthday: "2014-10-10"
+                      age: 20
+                      prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      height: 170
+                      job:
+                        id: 1 # ex)1:会社員
+                        name: "会社員"
+                      reason:
+                        id: 1
+                        name: "ブロック名称"
+                  totalCount: 2
+                  offset: 0
+                  limit: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       tags:
         - "Block"
@@ -629,6 +1134,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /blocks/{blockId}/:
     delete:
@@ -650,6 +1159,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /notifications/:
     get:
@@ -691,8 +1204,23 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+                example:
+                  notifications:
+                    - id: 1
+                      title: "タイトル1"
+                      text: "本文1"
+                    - id: 2
+                      title: "タイトル1"
+                      text: "本文2"
+                  totalCount: 2
+                  offset: 0
+                  limit: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /notifications/{notificationId}:
     post:
@@ -714,6 +1242,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /login_bonus/:
     post:
@@ -728,6 +1260,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /templates/messages/:
     get:
@@ -769,8 +1305,27 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+                example:
+                  templates:
+                    - id: 1
+                      type:
+                        id: 1
+                        name: "種別名1"
+                      contents: "本文1"
+                    - id: 2
+                      type:
+                        id: 2
+                        name: "種別名2"
+                      contents: "本文2"
+                  totalCount: 2
+                  offset: 0
+                  limit: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       tags:
         - "Template"
@@ -797,6 +1352,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /templates/messages/{msgTemplateId}:
     post:
@@ -832,6 +1391,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - "Template"
@@ -851,6 +1414,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /settings/notifications/:
     get:
@@ -869,6 +1436,10 @@ paths:
                 $ref: '#/components/schemas/UserNotificationSettings'
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - "SettingNotification"
@@ -905,6 +1476,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /settings/searches/:
     get:
@@ -920,8 +1495,52 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserSearchConditions'
+              example:
+                id: 1
+                user_id: "1"
+                order_no: 1
+                age_min: 19
+                age_max: 30
+                prefecture:
+                  - 40
+                  - 41
+                height_min: 165
+                height_max: 180
+                body_shape:
+                  - 1
+                  - 2
+                prefecture_of_birth:
+                  - 40
+                  - 41
+                education:
+                  - 1
+                annual_income_min: 300
+                annual_income_max: 500
+                children: 1
+                job:
+                  - 1
+                  - 2
+                hope_to_meet:
+                  - 1
+                personality:
+                  - 1
+                favorite_place:
+                  - 1
+                  - 2
+                hobby:
+                  - 1
+                  - 2
+                drink: false
+                cigarettes: false
+                holiday:
+                  - 6
+                  - 7
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     put:
       tags:
         - "Searche"
@@ -939,6 +1558,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /settings/searches/{id}/:
     post:
@@ -963,6 +1586,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /inquiry/:
     put:
@@ -989,6 +1616,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users/recommends/:
     get:
@@ -1035,8 +1666,219 @@ paths:
                   limit:
                     type: "integer"
                     description: "取得件数"
+                example:
+                  users:
+                    - id: "1"
+                      nickname: "ニックネーム1"
+                      birthday: "2014-10-10"
+                      age: 20
+                      prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      gender:
+                        id: 1 # 男性:1、女性:2
+                        name: "男性"
+                      height: 170
+                      job:
+                        id: 1 # ex)1:会社員
+                        name: "会社員"
+                      introduction_text: "自己紹介"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath1"
+                          download_url: "http://imagePath1"
+                        - id: 2
+                          storage_path: "http://imagePath2"
+                          download_url: "http://imagePath2"
+                        - id: 3
+                          storage_path: "http://imagePath3"
+                          download_url: "http://imagePath3"
+                        - id: 4
+                          storage_path: "http://imagePath4"
+                          download_url: "http://imagePath4"
+                        - id: 5
+                          storage_path: "http://imagePath5"
+                          download_url: "http://imagePath5"
+                        - id: 6
+                          storage_path: "http://imagePath6"
+                          download_url: "http://imagePath6"
+                      numOfLikes: 100
+                      numOfPoints: 100
+                      age_approval_status:
+                        id: 1 # 1:未審査,2:審査済,3:却下
+                        name: "未審査"
+                      figure:
+                        id: 1 # ex)1:スリム
+                        name: "スリム"
+                      birth_of_prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      education:
+                        id: 1 # ex)1:高卒
+                        name: "高卒"
+                      language:
+                        id: 1 # ex)1:日本語
+                        name: "日本語"
+                      sibling:
+                        id: 1 # ex)ユーザが男性の場合 1:長男,ユーザが女性の場合 1:長女
+                        name: "長男"
+                      sociability:
+                        - id: 1 # ex)1:大人数が好き
+                          name: "大人数が好き"
+                      housemate:
+                        id: 1 # ex)1:一人暮らし
+                        name: "一人暮らし"
+                      future_move:
+                        id: 1 # ex)1:可能
+                        name: "可能"
+                      blood_type:
+                        id: 1 # ex)1:A型
+                        name: "A型"
+                      marriageHistory:
+                        id: 1 # ex)1:未婚
+                        name: "未婚"
+                      has_child:
+                        id: 1 # ex)1:なし
+                        name: "なし"
+                      smoking:
+                        id: 1 # ex)1:吸う
+                        name: "吸う"
+                      drink:
+                        id: 1 # ex)1:飲まない
+                        name: "飲まない"
+                      personality:
+                        - id: 1 # ex)1:優しい
+                          name: "優しい"
+                      hobbies:
+                        - id: 1 # ex)1:映画
+                          name: "映画"
+                      income:
+                        id: 1 # ex)1:300万円未満
+                        name: "300万円未満"
+                      holiday:
+                        - id: 1 # ex)1:月曜
+                          name: "月曜"
+                        - id: 2
+                          name: "火曜"
+                      process_to_meet:
+                        id: 1 # ex)1:マッチングしたらできるだけ早くまずお会いしてみたい
+                        name: "マッチングしたらできるだけ早くまずお会いしてみたい"
+                      important:
+                        id: 1 # ex)1:年齢・写真の印象
+                        name: "年齢・写真の印象"
+                      dating_fee:
+                        id: 1 # ex)1:初回デート費用
+                        name: "初回デート費用"
+                    - id: "2"
+                      nickname: "ニックネーム2"
+                      birthday: "2014-10-10"
+                      age: 20
+                      prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      gender:
+                        id: 1 # 男性:1、女性:2
+                        name: "男性"
+                      height: 170
+                      job:
+                        id: 1 # ex)1:会社員
+                        name: "会社員"
+                      introduction_text: "自己紹介"
+                      image:
+                        - id: 1
+                          storage_path: "http://imagePath1"
+                          download_url: "http://imagePath1"
+                        - id: 2
+                          storage_path: "http://imagePath2"
+                          download_url: "http://imagePath2"
+                        - id: 3
+                          storage_path: "http://imagePath3"
+                          download_url: "http://imagePath3"
+                        - id: 4
+                          storage_path: "http://imagePath4"
+                          download_url: "http://imagePath4"
+                        - id: 5
+                          storage_path: "http://imagePath5"
+                          download_url: "http://imagePath5"
+                        - id: 6
+                          storage_path: "http://imagePath6"
+                          download_url: "http://imagePath6"
+                      numOfLikes: 100
+                      numOfPoints: 100
+                      age_approval_status:
+                        id: 1 # 1:未審査,2:審査済,3:却下
+                        name: "未審査"
+                      figure:
+                        id: 1 # ex)1:スリム
+                        name: "スリム"
+                      birth_of_prefecture:
+                        id: 1 # ex)1:東京
+                        name: "東京"
+                      education:
+                        id: 1 # ex)1:高卒
+                        name: "高卒"
+                      language:
+                        id: 1 # ex)1:日本語
+                        name: "日本語"
+                      sibling:
+                        id: 1 # ex)ユーザが男性の場合 1:長男,ユーザが女性の場合 1:長女
+                        name: "長男"
+                      sociability:
+                        - id: 1 # ex)1:大人数が好き
+                          name: "大人数が好き"
+                      housemate:
+                        id: 1 # ex)1:一人暮らし
+                        name: "一人暮らし"
+                      future_move:
+                        id: 1 # ex)1:可能
+                        name: "可能"
+                      blood_type:
+                        id: 1 # ex)1:A型
+                        name: "A型"
+                      marriageHistory:
+                        id: 1 # ex)1:未婚
+                        name: "未婚"
+                      has_child:
+                        id: 1 # ex)1:なし
+                        name: "なし"
+                      smoking:
+                        id: 1 # ex)1:吸う
+                        name: "吸う"
+                      drink:
+                        id: 1 # ex)1:飲まない
+                        name: "飲まない"
+                      personality:
+                        - id: 1 # ex)1:優しい
+                          name: "優しい"
+                      hobbies:
+                        - id: 1 # ex)1:映画
+                          name: "映画"
+                      income:
+                        id: 1 # ex)1:300万円未満
+                        name: "300万円未満"
+                      holiday:
+                        - id: 1 # ex)1:月曜
+                          name: "月曜"
+                        - id: 2
+                          name: "火曜"
+                      process_to_meet:
+                        id: 1 # ex)1:マッチングしたらできるだけ早くまずお会いしてみたい
+                        name: "マッチングしたらできるだけ早くまずお会いしてみたい"
+                      important:
+                        id: 1 # ex)1:年齢・写真の印象
+                        name: "年齢・写真の印象"
+                      dating_fee:
+                        id: 1 # ex)1:初回デート費用
+                        name: "初回デート費用"
+                  totalCount: 2
+                  offset: 0
+                  limit: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users/recommends/@userId/like:
     post:
@@ -1058,6 +1900,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /users/recommends/@userId/skip:
     post:
@@ -1079,6 +1925,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /upload/identifications/:
     put:
@@ -1105,6 +1955,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /upload/images/:
     put:
@@ -1131,6 +1985,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /upload/images/{imageId}/:
     post:
@@ -1164,6 +2022,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     delete:
       tags:
         - "Image"
@@ -1183,6 +2045,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /shop/{type}/subscriptions/:
     get:
@@ -1220,8 +2086,17 @@ paths:
                     name:
                       type: "string"
                       description: "定期購読商品名"
+                  example:
+                    - id: 1
+                      name: "定期購読商品名1"
+                    - id: 2
+                      name: "定期購読商品名2"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /shop/{type}/products/:
     get:
@@ -1259,8 +2134,17 @@ paths:
                     name:
                       type: "string"
                       description: "買い切り商品名"
+                  example:
+                    - id: 1
+                      name: "買い切り商品名1"
+                    - id: 2
+                      name: "買い切り商品名2"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /shop/{type}/exchange/:
     get:
@@ -1291,8 +2175,21 @@ paths:
                 type: "array"
                 items:
                   $ref: '#/components/schemas/ExchangeItems'
+                example:
+                  - id: 1
+                    name: "交換用商品名1"
+                    consumption_point: 2
+                    order_no: 1
+                  - id: 2
+                    name: "交換用商品名2"
+                    consumption_point: 3
+                    order_no: 2
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
     post:
       tags:
         - "ExchangeItem"
@@ -1318,6 +2215,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
   /point/history/:
     get:
@@ -1350,6 +2251,16 @@ paths:
                     point:
                       type: "integer"
                       description: "ポイント"
+                  example:
+                    - grant_at: "2019-12-10T13:50:40+09:00"
+                      item_id: 1
+                      item_name: "項目名1"
+                      point: 10
+                    - grant_at: "2019-12-10T13:50:40+09:00"
+                      item_id: 2
+                      item_name: "項目名2"
+                      point: 11
+
         400:
           description: "NG"
 
@@ -1380,6 +2291,10 @@ paths:
           description: "OK"
         400:
           description: "NG"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
 
 components:
   securitySchemes:
@@ -1811,6 +2726,17 @@ components:
           type: "integer"
           description: "表示順"
 
+    HobbyOptions:
+      description: "好きなこと・趣味マスタ"
+      type: "object"
+      properties:
+        id:
+          type: "integer"
+          description: "ID"
+        name:
+          type: "string"
+          description: "名称"
+
     UserGetResponse:
       description: "ユーザ一覧"
       type: "object"
@@ -1889,6 +2815,10 @@ components:
           type: "array"
           items:
             $ref: '#/components/schemas/PersonalityOptions'
+        hobbies: # 好きなこと・趣味マスタ
+          type: "array"
+          items:
+            $ref: '#/components/schemas/HobbyOptions'
         income: # 年収
           $ref: '#/components/schemas/IncomeOptions'
         holiday: # 休日
@@ -1902,7 +2832,7 @@ components:
         dating_fee: # 最初のデート料金
           $ref: '#/components/schemas/DatingFeeOptions'
       example:
-        id: 1
+        id: "1"
         nickname: "ニックネーム"
         birthday: "2014-10-10"
         age: 20
@@ -1984,6 +2914,9 @@ components:
         personality:
           - id: 1 # ex)1:優しい
             name: "優しい"
+        hobbies:
+          - id: 1 # ex)1:映画
+            name: "映画"
         income:
           id: 1 # ex)1:300万円未満
           name: "300万円未満"
@@ -2081,6 +3014,11 @@ components:
           items:
             type: "integer"
           description: "性格・タイプ"
+        hobbies:
+          type: "array"
+          items:
+            type: "integer"
+          description: "好きなこと・趣味"
         income_id:
           type: "integer"
           description: "年収"
@@ -2180,6 +3118,11 @@ components:
           items:
             type: "integer"
           description: "性格・タイプ"
+        hobbies:
+          type: "array"
+          items:
+            type: "integer"
+          description: "好きなこと・趣味"
         income_id:
           type: "integer"
           description: "年収"
@@ -2238,7 +3181,7 @@ components:
           format: "date-time"
       example:
         id: 1
-        user_id: 1
+        user_id: "1"
         image:
           - id: 1
             storage_path: "http://imagePath1"
@@ -2296,7 +3239,7 @@ components:
           format: "date-time"
       example:
         id: 1
-        user_id: 1
+        user_id: "1"
         image:
           - id: 1
             storage_path: "http://imagePath1"
@@ -2350,7 +3293,7 @@ components:
           $ref: '#/components/schemas/BlockTypes'
       example:
         id: 1
-        user_id: 1
+        user_id: "1"
         image:
           - id: 1
             storage_path: "http://imagePath1"
@@ -2487,10 +3430,9 @@ components:
           description: "身長"
         job: # 職業
           $ref: '#/components/schemas/JobOptions'
-
       example:
         id: 1
-        user_id: 1
+        user_id: "1"
         image:
           - id: 1
             storage_path: "http://imagePath1"
@@ -2533,7 +3475,7 @@ components:
       example:
         id: 1
         chat_room_id: 1
-        user_id: 1
+        user_id: "1"
         message: "メッセージ"
         created_at: "2014-10-10T13:50:40+09:00"
         updated_at: "2014-10-10T13:50:40+09:00"
@@ -2574,3 +3516,40 @@ components:
           id: 1
           name: "種別名"
         contents: "本文"
+
+    Error:
+      description: "エラー"
+      type: "object"
+      properties:
+        code:
+          type: "integer"
+          description: ""
+        message:
+          type: "string"
+          description: ""
+        errors:
+          type: "array"
+          description: ""
+          items:
+            $ref: '#/components/schemas/ErrorList'
+      example:
+        code: 1
+        message: "Validation Failed"
+        errors:
+          - resource: "Issue"
+            field: "title"
+            code: "missing_field"
+
+    ErrorList:
+      description: "エラーリスト"
+      type: "object"
+      properties:
+        resource:
+          type: "string"
+          description: ""
+        field:
+          type: "string"
+          description: ""
+        code:
+          type: "string"
+          description: ""
